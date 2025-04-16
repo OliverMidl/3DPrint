@@ -1,4 +1,4 @@
-package com.example.a3dprint
+package com.example.a3dprint.Screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.example.a3dprint.data.FilamentViewModel
+import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
@@ -50,7 +50,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun FilamentyScreen(
     viewModel: FilamentViewModel = viewModel(),
-    onNavigateToZakazky: () -> Unit
+    onNavigateToZakazky: () -> Unit,
+    onNavigateToFinancie: () -> Unit
 ) {
     val filaments = viewModel.filaments.collectAsState().value
     var selectedTab by remember { mutableStateOf(1) }
@@ -69,6 +70,12 @@ fun FilamentyScreen(
                     onClick = {}, // sme na Filamentoch
                     icon = { Icon(Icons.Default.Email, contentDescription = "Filamenty") },
                     label = { Text("Filamenty") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {onNavigateToFinancie()},
+                    icon = { Icon(Icons.Default.Star, contentDescription = "Financie") },
+                    label = { Text("Financie") }
                 )
                 // ...
             }

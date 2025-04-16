@@ -1,4 +1,4 @@
-package com.example.a3dprint
+package com.example.a3dprint.Screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,19 +19,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Email
-import com.example.a3dprint.data.MainScreenViewModel
+import androidx.compose.material.icons.filled.Star
+import com.example.a3dprint.viewModels.ZakazkyScreenViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ZakazkyScreen(
-    viewModel: MainScreenViewModel = viewModel(),
-    onNavigateToFilamenty: () -> Unit
+    viewModel: ZakazkyScreenViewModel = viewModel(),
+    onNavigateToFilamenty: () -> Unit,
+    onNavigateToFinancie: () -> Unit
 ) {
     val zakazky = viewModel.zakazky.collectAsState().value
-
     var selectedTab by remember { mutableStateOf(0) }
 
     Scaffold(
@@ -48,6 +48,12 @@ fun ZakazkyScreen(
                     onClick = { onNavigateToFilamenty() },
                     icon = { Icon(Icons.Default.Email, contentDescription = "Filamenty") },
                     label = { Text("Filamenty") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { onNavigateToFinancie() },
+                    icon = { Icon(Icons.Default.Star, contentDescription = "Financie") },
+                    label = { Text("Financie") }
                 )
                 // ...
             }
