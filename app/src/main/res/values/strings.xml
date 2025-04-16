@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">3DPrint</string>
+    <string name="text_zakazky">Zákazky</string>
+    <string name="text_filamenty">Filamenty</string>
+    <string name="text_financie">Financie</string>
+    <string name="text_AddEdit">Add/Edit</string>
 </resources>

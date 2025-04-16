@@ -34,17 +34,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.a3dprint.navMenu.NavigationDestination
+import com.example.a3dprint.R
 
+object FinancieScreenDest : NavigationDestination {
+    override val route = "financie"
+    override val titleRes = R.string.text_financie
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +56,7 @@ fun FinancieScreen(
     onNavigateToFilamenty: () -> Unit
 ) {
     val filaments = viewModel.filaments.collectAsState().value
-    var selectedTab by remember { mutableStateOf(1) }
+    //var selectedTab by remember { mutableStateOf(1) }
 
     Scaffold(
         bottomBar = {

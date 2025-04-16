@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import com.example.a3dprint.navMenu.MainNavigation
 import com.example.a3dprint.ui.theme._3DPrintTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,8 +19,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             _3DPrintTheme {
-                MainNavigation()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(colorResource(id = R.color.blue1))
+                ) {
+                    MainNavigation()
+                }
             }
         }
     }
 }
+/*
+ <string name="route_zakazky">zakazky</string>
+    <string name="route_filamenty">filamenty</string>
+    <string name="route_financie">financie</string>
+ */

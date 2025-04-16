@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
@@ -32,6 +33,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,10 +43,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.a3dprint.navMenu.NavigationDestination
+import com.example.a3dprint.R
 
+object FilamentyScreenDest : NavigationDestination {
+    override val route = "filamenty"
+    override val titleRes = R.string.text_filamenty
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,27 +68,36 @@ fun FilamentyScreen(
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = colorResource(id = R.color.blue3) // Farba pozadia celého bottomBar
+            ) {
                 NavigationBarItem(
                     selected = false,
-                    onClick = { onNavigateToZakazky() },
-                    icon = { Icon(Icons.Default.Email, contentDescription = "Zákazky") },
-                    label = { Text("Zákazky") }
+                    onClick = {onNavigateToZakazky() },
+                    icon = { Icon(
+                        Icons.Default.DateRange,
+                        contentDescription = ZakazkyScreenDest.route,
+                        tint = colorResource(id = R.color.black))
+                    },
+                    label = { Text(stringResource(ZakazkyScreenDest.titleRes)) },
                 )
                 NavigationBarItem(
                     selected = true,
-                    onClick = {}, // sme na Filamentoch
-                    icon = { Icon(Icons.Default.Email, contentDescription = "Filamenty") },
-                    label = { Text("Filamenty") }
+                    onClick = {  }, // sme na Zákazkách
+                    icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route) },
+                    label = { Text(stringResource(FilamentyScreenDest.titleRes)) },
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {onNavigateToFinancie()},
-                    icon = { Icon(Icons.Default.Star, contentDescription = "Financie") },
-                    label = { Text("Financie") }
-                )
-                // ...
+                    onClick = { onNavigateToFinancie() },
+                    icon = { Icon(Icons.Default.Star, contentDescription = FinancieScreenDest.route) },
+                    label = { Text(stringResource(FinancieScreenDest.titleRes)) },
+
+                    )
+
+
             }
+
         },
         topBar = {
             TopAppBar(
@@ -92,7 +111,10 @@ fun FilamentyScreen(
                     IconButton(onClick = {}) {
                         Icon(Icons.Default.Person, contentDescription = "Profile")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.blue3) // Tu môžeš nastaviť svoju požadovanú farbu pozadia
+                )
             )
         },
         floatingActionButton = {
@@ -104,14 +126,17 @@ fun FilamentyScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(8.dp)
+                .background(colorResource(id = R.color.blue1))
                 .fillMaxSize()
+
         ) {
             filaments.forEach { filament ->
                 Card(
+
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 6.dp),
+                        .padding(8.dp),
+
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {
@@ -120,6 +145,7 @@ fun FilamentyScreen(
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
+
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
