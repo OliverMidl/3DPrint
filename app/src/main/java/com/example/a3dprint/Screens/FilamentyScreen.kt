@@ -61,7 +61,8 @@ object FilamentyScreenDest : NavigationDestination {
 fun FilamentyScreen(
     viewModel: FilamentViewModel = viewModel(),
     onNavigateToZakazky: () -> Unit,
-    onNavigateToFinancie: () -> Unit
+    onNavigateToFinancie: () -> Unit,
+    onNavigateToAddFilament: () -> Unit // <- PRIDANÉ
 ) {
     val filaments = viewModel.filaments.collectAsState().value
     var selectedTab by remember { mutableStateOf(1) }
@@ -77,20 +78,22 @@ fun FilamentyScreen(
                     icon = { Icon(
                         Icons.Default.DateRange,
                         contentDescription = ZakazkyScreenDest.route,
-                        tint = colorResource(id = R.color.black))
+                        tint = colorResource(id = R.color.dark_grey))
                     },
                     label = { Text(stringResource(ZakazkyScreenDest.titleRes)) },
                 )
                 NavigationBarItem(
                     selected = true,
                     onClick = {  }, // sme na Zákazkách
-                    icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route) },
+                    icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route,
+                        tint = colorResource(id = R.color.black)) },
                     label = { Text(stringResource(FilamentyScreenDest.titleRes)) },
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { onNavigateToFinancie() },
-                    icon = { Icon(Icons.Default.Star, contentDescription = FinancieScreenDest.route) },
+                    icon = { Icon(Icons.Default.Star, contentDescription = FilamentyScreenDest.route,
+                        tint = colorResource(id = R.color.dark_grey)) },
                     label = { Text(stringResource(FinancieScreenDest.titleRes)) },
 
                     )
@@ -101,15 +104,14 @@ fun FilamentyScreen(
         },
         topBar = {
             TopAppBar(
-                title = { Text("Filamenty") },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Person, contentDescription = "Profile")
+                title = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp)), // Zaoblené rohy
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(stringResource(R.string.text_filamenty))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -118,7 +120,7 @@ fun FilamentyScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Pridaj nový filament */ }) {
+            FloatingActionButton(onClick = { onNavigateToAddFilament() }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Filament")
             }
         },
@@ -137,8 +139,8 @@ fun FilamentyScreen(
                         .fillMaxWidth()
                         .padding(8.dp),
 
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(4.dp)
+                    shape = RoundedCornerShape(13.dp),
+                    colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.blue2)),
                 ) {
                     Row(
                         modifier = Modifier
@@ -164,7 +166,9 @@ fun FilamentyScreen(
                             }
                         }
                         IconButton(onClick = { /* nastavenia */ }) {
-                            Icon(Icons.Default.Settings, contentDescription = "Nastavenia")
+                            Icon(Icons.Default.Settings,
+                                contentDescription = "Nastavenia",
+                                )
                         }
                     }
                 }

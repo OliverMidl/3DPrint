@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
@@ -67,13 +68,15 @@ fun ZakazkyScreen(
                 NavigationBarItem(
                     selected = false,
                     onClick = { onNavigateToFilamenty() },
-                    icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route) },
+                    icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route,
+                        tint = colorResource(id = R.color.dark_grey)) },
                     label = { Text(stringResource(FilamentyScreenDest.titleRes)) },
                 )
                 NavigationBarItem(
                     selected = false,
                     onClick = { onNavigateToFinancie() },
-                    icon = { Icon(Icons.Default.Star, contentDescription = FinancieScreenDest.route) },
+                    icon = { Icon(Icons.Default.Star, contentDescription = FilamentyScreenDest.route,
+                        tint = colorResource(id = R.color.dark_grey)) },
                     label = { Text(stringResource(FinancieScreenDest.titleRes)) },
 
                 )
@@ -84,15 +87,14 @@ fun ZakazkyScreen(
         },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.text_zakazky)) },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu") //toto pojde prec
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Person, contentDescription = "Profile") //toto pojde prec
+                title = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp)), // Zaoblené rohy
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(stringResource(R.string.text_zakazky))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -102,7 +104,7 @@ fun ZakazkyScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {}) {
-                Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.text_AddEdit))
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.text_AddEdit))
             }
         },
         content = { padding ->

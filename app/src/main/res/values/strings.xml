@@ -4,4 +4,9 @@
     <string name="text_filamenty">Filamenty</string>
     <string name="text_financie">Financie</string>
     <string name="text_AddEdit">Add/Edit</string>
+
+    <string name="save_action">Uložiť</string>
+    <string name="item_name_req">Názov</string>
+    <string name="item_price_req">Jednotková cena</string>
+    <string name="quantity_req">Gramáž</string>
 </resources>

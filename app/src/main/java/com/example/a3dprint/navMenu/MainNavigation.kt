@@ -11,6 +11,8 @@ import com.example.a3dprint.Screens.FinancieScreen
 import com.example.a3dprint.Screens.FinancieScreenDest
 import com.example.a3dprint.Screens.ZakazkyScreen
 import com.example.a3dprint.Screens.ZakazkyScreenDest
+import com.example.financie.ui.AddFilamentScreen
+import com.example.financie.ui.AddFilamentScreenDest
 
 
 @Composable
@@ -37,9 +39,12 @@ fun MainNavigation(
             FilamentyScreen(
                 onNavigateToZakazky = {
                 navController.navigate(route = ZakazkyScreenDest.route)
-            },
+                },
                 onNavigateToFinancie = {
                     navController.navigate(route = FinancieScreenDest.route)
+                },
+                onNavigateToAddFilament = {
+                    navController.navigate(route = AddFilamentScreenDest.route)
                 }
             )
         }
@@ -51,6 +56,11 @@ fun MainNavigation(
                 onNavigateToFilamenty = {
                     navController.navigate(route = FilamentyScreenDest.route)
                 }
+            )
+        }
+        composable(route = AddFilamentScreenDest.route) {
+            AddFilamentScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
