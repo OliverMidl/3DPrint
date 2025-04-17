@@ -80,14 +80,16 @@ fun AddFilamentScreen(
                 value = uiState.name,
                 onValueChange = viewModel::updateName,
                 label = { Text("Názov") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::updateDescription,
                 label = { Text("Popis") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             OutlinedTextField(
@@ -95,7 +97,8 @@ fun AddFilamentScreen(
                 onValueChange = viewModel::updatePrice,
                 label = { Text("Jednotková cena") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             OutlinedTextField(
@@ -103,7 +106,8 @@ fun AddFilamentScreen(
                 onValueChange = viewModel::updateWeight,
                 label = { Text("Gramáž") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             Button(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,8 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -36,15 +35,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -144,32 +140,50 @@ fun FilamentyScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                            //.background(colorResource(id = R.color.purple_200)),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
 
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(verticalAlignment = Alignment.CenterVertically,) {
                             Box(
                                 modifier = Modifier
-                                    .size(10.dp)
+                                    .size(15.dp)
                                     .clip(CircleShape)
-                                    //.background(filament.color)
+                                    .background(colorResource(id = R.color.teal_200))
+
+
                             )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Column {
-                                Text(filament.name, style = MaterialTheme.typography.bodyLarge)
+                            Spacer(modifier = Modifier.weight(1f))
+                            Column(
+                                modifier = Modifier
+                                    .offset(x = 20.dp, y = 0.dp)
+                                    .background(colorResource(id = R.color.blue2)),
+
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(filament.name, style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center,)
                                 Text(
                                     "${filament.currentWeight}g / ${filament.maxWeight}g",
-                                    style = MaterialTheme.typography.bodySmall
+                                    style = MaterialTheme.typography.bodySmall,
+                                    textAlign = TextAlign.Center,
+
+                                )
+
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            IconButton(onClick = { }) {
+
+                                Icon(Icons.Default.Settings,
+                                    contentDescription = "Nastavenia",
+                                    modifier = Modifier.size(25.dp)
                                 )
                             }
                         }
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Default.Settings,
-                                contentDescription = "Nastavenia",
-                                )
-                        }
+
                     }
                 }
             }

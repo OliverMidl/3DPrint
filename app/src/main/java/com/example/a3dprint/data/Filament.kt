@@ -10,6 +10,6 @@ data class Filament(
     val description: String,
     val price: Double,
     val maxWeight: Int,
-    val currentWeight: Int = 0,
+    val currentWeight: Int = maxWeight,
   //  val photoUri: String? = null
 )
