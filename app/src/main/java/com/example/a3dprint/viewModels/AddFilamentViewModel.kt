@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dprint.data.Filament
-import com.example.a3dprint.data.FilamentDatabase
+import com.example.a3dprint.data.AppDatabase
 import com.example.a3dprint.data.FilamentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,7 +25,7 @@ data class AddFilamentUiState(
 
 class AddFilamentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val database = FilamentDatabase.getDatabase(application)
+    private val database = AppDatabase.getDatabase(application)
     private val repository = FilamentRepository(database.filamentDao())
     val filaments = database.filamentDao()
         .getAllFilaments()
