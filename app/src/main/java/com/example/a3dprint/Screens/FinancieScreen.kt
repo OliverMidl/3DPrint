@@ -72,7 +72,7 @@ fun FinancieScreen(
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = colorResource(id = R.color.blue3) // Farba pozadia celého bottomBar
+                containerColor = colorResource(id = R.color.blue3)
             ) {
                 NavigationBarItem(
                     selected = false,
@@ -110,19 +110,19 @@ fun FinancieScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp)), // Zaoblené rohy
+                            .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(R.string.text_filamenty))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorResource(id = R.color.blue3) // Tu môžeš nastaviť svoju požadovanú farbu pozadia
+                    containerColor = colorResource(id = R.color.blue3)
                 )
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*onNavigateToAddFilament()*/ }) {
+            FloatingActionButton(onClick = {  }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Filament")
             }
         },

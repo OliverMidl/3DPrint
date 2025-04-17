@@ -1,4 +1,4 @@
-package com.example.financie.ui
+package com.example.a3dprint.Screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -6,20 +6,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.R
-import com.example.a3dprint.Screens.FilamentyScreenDest
 import com.example.a3dprint.navMenu.NavigationDestination
+import com.example.a3dprint.viewModels.AddFilamentViewModel
 
 object AddFilamentScreenDest : NavigationDestination {
     override val route = "pridat_filament"
@@ -63,7 +61,7 @@ fun AddFilamentScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Button(
-                onClick = { /* TODO: pick photo */ },
+                onClick = {  },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)

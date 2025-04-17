@@ -11,8 +11,8 @@ import com.example.a3dprint.Screens.FinancieScreen
 import com.example.a3dprint.Screens.FinancieScreenDest
 import com.example.a3dprint.Screens.ZakazkyScreen
 import com.example.a3dprint.Screens.ZakazkyScreenDest
-import com.example.financie.ui.AddFilamentScreen
-import com.example.financie.ui.AddFilamentScreenDest
+import com.example.a3dprint.Screens.AddFilamentScreen
+import com.example.a3dprint.Screens.AddFilamentScreenDest
 
 
 @Composable

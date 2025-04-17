@@ -11,5 +11,5 @@ data class Filament(
     val price: Double,
     val maxWeight: Int,
     val currentWeight: Int = 0,
-  //  val photoUri: String? = null // uložíme URI ako String
+  //  val photoUri: String? = null
 )

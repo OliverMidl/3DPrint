@@ -48,12 +48,12 @@ fun ZakazkyScreen(
 
 ) {
     val zakazky = viewModel.zakazky.collectAsState().value
-    var selectedTab by remember { mutableStateOf(0) }
+    //var selectedTab by remember { mutableStateOf(0) }
 
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = colorResource(id = R.color.blue3) // Farba pozadia celého bottomBar
+                containerColor = colorResource(id = R.color.blue3)
             ) {
                 NavigationBarItem(
                     selected = true,
@@ -91,14 +91,14 @@ fun ZakazkyScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp)), // Zaoblené rohy
+                            .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(R.string.text_zakazky))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorResource(id = R.color.blue3) // Tu môžeš nastaviť svoju požadovanú farbu pozadia
+                    containerColor = colorResource(id = R.color.blue3)
                 )
             )
         },
@@ -113,7 +113,7 @@ fun ZakazkyScreen(
                 modifier = modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.blue1)), // tu nastavíš svoju farbu
+                    .background(colorResource(id = R.color.blue1)),
 
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -125,7 +125,7 @@ fun ZakazkyScreen(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp)) // Zaoblené rohy
+                            .clip(RoundedCornerShape(16.dp))
                             .background(colorResource(id = R.color.blue2)),
                         contentAlignment = Alignment.Center
                     ) {

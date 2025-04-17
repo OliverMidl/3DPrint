@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -51,7 +50,6 @@ import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.R
-import androidx.compose.foundation.lazy.items
 
 object FilamentyScreenDest : NavigationDestination {
     override val route = "filamenty"
@@ -66,13 +64,13 @@ fun FilamentyScreen(
     onNavigateToFinancie: () -> Unit,
     onNavigateToAddFilament: () -> Unit
 ) {
-    val filaments by viewModel.filaments.collectAsState()
-    var selectedTab by remember { mutableStateOf(1) }
+    val filaments = viewModel.filaments.collectAsState().value
+    //var selectedTab by remember { mutableStateOf(1) }
 
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = colorResource(id = R.color.blue3) // Farba pozadia celého bottomBar
+                containerColor = colorResource(id = R.color.blue3)
             ) {
                 NavigationBarItem(
                     selected = false,
@@ -86,7 +84,7 @@ fun FilamentyScreen(
                 )
                 NavigationBarItem(
                     selected = true,
-                    onClick = {  }, // sme na Zákazkách
+                    onClick = {  }, //sme tu
                     icon = { Icon(Icons.Default.Email, contentDescription = FilamentyScreenDest.route,
                         tint = colorResource(id = R.color.black)) },
                     label = { Text(stringResource(FilamentyScreenDest.titleRes)) },
@@ -110,14 +108,14 @@ fun FilamentyScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp)), // Zaoblené rohy
+                            .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(R.string.text_filamenty))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorResource(id = R.color.blue3) // Tu môžeš nastaviť svoju požadovanú farbu pozadia
+                    containerColor = colorResource(id = R.color.blue3)
                 )
             )
         },
@@ -127,17 +125,20 @@ fun FilamentyScreen(
             }
         },
     ) { padding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(padding)
                 .background(colorResource(id = R.color.blue1))
                 .fillMaxSize()
+
         ) {
-            items(filaments) { filament ->
+            filaments.forEach { filament ->
                 Card(
+
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
+
                     shape = RoundedCornerShape(13.dp),
                     colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.blue2)),
                 ) {
@@ -146,13 +147,14 @@ fun FilamentyScreen(
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
+
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
                                     .size(10.dp)
                                     .clip(CircleShape)
-                                    .background(colorResource(id = R.color.blue2)) // predpokladám, že `color` je `Color`
+                                    //.background(filament.color)
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Column {
@@ -163,11 +165,10 @@ fun FilamentyScreen(
                                 )
                             }
                         }
-                        IconButton(onClick = { /* nastavenia */ }) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
+                        IconButton(onClick = { }) {
+                            Icon(Icons.Default.Settings,
                                 contentDescription = "Nastavenia",
-                            )
+                                )
                         }
                     }
                 }

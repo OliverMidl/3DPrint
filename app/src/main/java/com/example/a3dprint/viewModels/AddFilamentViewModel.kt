@@ -1,8 +1,7 @@
-package com.example.financie.ui
+package com.example.a3dprint.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dprint.data.Filament
 import com.example.a3dprint.data.FilamentDatabase
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class AddFilamentUiState(
@@ -31,7 +29,7 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
     private val repository = FilamentRepository(database.filamentDao())
     val filaments = database.filamentDao()
         .getAllFilaments()
-        .map { it.sortedBy { filament -> filament.name } } // napr. abecedne
+        .map { it.sortedBy { filament -> filament.name } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _uiState = MutableStateFlow(AddFilamentUiState())

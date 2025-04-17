@@ -12,14 +12,14 @@ class FinancieScreenViewModel : ViewModel() {
     val totalProfit: StateFlow<Double> = _totalProfit
 
     init {
-        // V budúcnosti môžeš načítať z databázy alebo repository
+        //db
         loadTotalProfit()
     }
 
     private fun loadTotalProfit() {
         viewModelScope.launch {
-            // Simulácia načítania dát
-            _totalProfit.value = 0.0  // napr. db.getTotalProfit()
+            //data
+            _totalProfit.value = 0.0
         }
     }
 
