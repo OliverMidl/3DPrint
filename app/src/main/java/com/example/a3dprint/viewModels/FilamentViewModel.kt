@@ -1,23 +1,24 @@
 package com.example.a3dprint.viewModels
 
-import androidx.compose.ui.graphics.Color
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.a3dprint.data.Filament
+import com.example.a3dprint.data.FilamentDatabase
+import com.example.a3dprint.data.FilamentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-data class Filament(
-    val name: String,
-    val currentWeight: Int,
-    val maxWeight: Int,
-    val color: Color // toto je DÔLEŽITÉ
-)
+class FilamentViewModel(application: Application) : AndroidViewModel(application) {
 
-class FilamentViewModel : ViewModel() {
-    private val _filaments = MutableStateFlow(
-        listOf(
-            Filament("PLA - Light Blue Gembird", 750, 1000, Color.Blue),
-            Filament("PLA - Red Creality", 500, 1000, Color.Red)
-        )
+    private val repository = FilamentRepository(
+        FilamentDatabase.getDatabase(application).filamentDao()
     )
-    val filaments: StateFlow<List<Filament>> = _filaments
+
+    val filaments = repository.allFilaments
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 }

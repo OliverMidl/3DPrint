@@ -47,7 +47,7 @@ fun AddFilamentScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.KeyboardArrowLeft,
+                        Icon(Icons.Default.Email,
                             contentDescription = "Back"
                         )
                     }
