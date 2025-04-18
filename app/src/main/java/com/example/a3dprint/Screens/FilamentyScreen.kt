@@ -124,7 +124,7 @@ fun FilamentyScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .background(colorResource(id = R.color.blue1))
+             //   .background(colorResource(id = R.color.blue1))
                 .fillMaxSize()
 
         ) {
@@ -159,8 +159,8 @@ fun FilamentyScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             Column(
                                 modifier = Modifier
-                                    .offset(x = 20.dp, y = 0.dp)
-                                    .background(colorResource(id = R.color.blue2)),
+                                    .offset(x = 20.dp, y = 0.dp),
+                             //       .background(colorResource(id = R.color.blue2)),
 
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {

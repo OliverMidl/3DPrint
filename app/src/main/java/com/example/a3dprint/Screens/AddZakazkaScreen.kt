@@ -18,18 +18,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.R
 import com.example.a3dprint.navMenu.NavigationDestination
-import com.example.a3dprint.viewModels.AddFilamentViewModel
+import com.example.a3dprint.viewModels.AddZakazkaViewModel
 
-object AddFilamentScreenDest : NavigationDestination {
-    override val route = "pridat_filament"
-    override val titleRes = R.string.text_filamenty
+object AddZakazkaScreenDest : NavigationDestination {
+    override val route = "pridat_zakazku"
+    override val titleRes = R.string.text_zakazky
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddFilamentScreen(
+fun AddZakazkaScreen(
     onNavigateBack: () -> Unit,
-    viewModel: AddFilamentViewModel = viewModel()
+    viewModel: AddZakazkaViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -41,14 +40,12 @@ fun AddFilamentScreen(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(id = R.string.text_filamenty))
+                        Text(stringResource(id = R.string.text_zakazky))
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Back"
-                        )
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
                     }
                 }
             )
@@ -61,55 +58,31 @@ fun AddFilamentScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(
-                onClick = {  },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_launcher_background),
-                        contentDescription = "Upload",
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Text("Pridať fotku")
-                }
-            }
-
             OutlinedTextField(
-                value = uiState.name,
-                onValueChange = viewModel::updateName,
-                label = { Text("Názov") },
+                value = uiState.popis,
+                onValueChange = viewModel::updatePopis,
+                label = { Text("Názov zákazky") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
             OutlinedTextField(
-                value = uiState.description,
-                onValueChange = viewModel::updateDescription,
-                label = { Text("Popis") },
+                value = uiState.datum,
+                onValueChange = viewModel::updateDatum,
+                label = { Text("Datum") }, // zmenit!!!!
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
             OutlinedTextField(
-                value = uiState.price,
-                onValueChange = viewModel::updatePrice,
-                label = { Text("Jednotková cena") },
+                value = uiState.cena,
+                onValueChange = viewModel::updateCena,
+                label = { Text("Cena") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
-            OutlinedTextField(
-                value = uiState.weight,
-                onValueChange = viewModel::updateWeight,
-                label = { Text("Gramáž") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
 
             Button(
                 onClick = { viewModel.saveEntry(onNavigateBack) },
@@ -118,8 +91,9 @@ fun AddFilamentScreen(
                     .height(56.dp),
                 enabled = uiState.isValid
             ) {
-                Text("Uložiť")
+                Text("Uložiť zákazku")
             }
         }
     }
 }
+

@@ -10,4 +10,5 @@ interface FilamentDao {
 
     @Query("SELECT * FROM filaments")
     fun getAllFilaments(): Flow<List<Filament>>
+
 }

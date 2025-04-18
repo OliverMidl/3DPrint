@@ -27,10 +27,13 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
 
     private val database = AppDatabase.getDatabase(application)
     private val repository = FilamentRepository(database.filamentDao())
+    /*
     val filaments = database.filamentDao()
         .getAllFilaments()
         .map { it.sortedBy { filament -> filament.name } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        */
+
 
     private val _uiState = MutableStateFlow(AddFilamentUiState())
     val uiState: StateFlow<AddFilamentUiState> = _uiState

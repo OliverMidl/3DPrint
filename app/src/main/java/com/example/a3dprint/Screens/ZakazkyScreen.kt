@@ -38,6 +38,7 @@ fun ZakazkyScreen(
     viewModel: ZakazkyScreenViewModel = viewModel(),
     onNavigateToFilamenty: () -> Unit,
     onNavigateToFinancie: () -> Unit,
+    onNavigateToAddZakazka: () -> Unit,
 
 ) {
     val zakazky = viewModel.zakazky.collectAsState().value
@@ -96,7 +97,7 @@ fun ZakazkyScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = {onNavigateToAddZakazka()}) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.text_AddEdit))
             }
         },
@@ -107,13 +108,12 @@ fun ZakazkyScreen(
                     .padding(padding)
                     .fillMaxSize()
                     .background(colorResource(id = R.color.blue1)),
-
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-
             ) {
                 items(zakazky.size) { index ->
+                    val zakazka = zakazky[index]
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
@@ -122,7 +122,7 @@ fun ZakazkyScreen(
                             .background(colorResource(id = R.color.blue2)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(zakazky[index])
+                        Text(zakazka.popis)
                     }
                 }
             }
