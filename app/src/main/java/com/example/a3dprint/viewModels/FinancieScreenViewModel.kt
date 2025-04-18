@@ -1,29 +1,28 @@
 package com.example.a3dprint.viewModels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.a3dprint.data.AppDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class FinancieScreenViewModel : ViewModel() {
+class FinancieScreenViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val zakazkaDao = AppDatabase.getDatabase(application).zakazkaDao()
 
     private val _totalProfit = MutableStateFlow(0.0)
     val totalProfit: StateFlow<Double> = _totalProfit
 
     init {
-        //db
         loadTotalProfit()
     }
 
     private fun loadTotalProfit() {
         viewModelScope.launch {
-            //data
-            _totalProfit.value = 0.0
+            _totalProfit.value = zakazkaDao.getTotalPrice() ?: 0.0
         }
-    }
-
-    fun updateProfit(newProfit: Double) {
-        _totalProfit.value = newProfit
     }
 }

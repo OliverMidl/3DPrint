@@ -124,7 +124,7 @@ fun FilamentyScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-             //   .background(colorResource(id = R.color.blue1))
+                .background(colorResource(id = R.color.blue1))
                 .fillMaxSize()
 
         ) {

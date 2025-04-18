@@ -107,7 +107,7 @@ fun ZakazkyScreen(
                 modifier = modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.blue1)),
+                   .background(colorResource(id = R.color.blue1)),
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),

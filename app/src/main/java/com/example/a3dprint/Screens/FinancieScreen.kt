@@ -1,5 +1,6 @@
 package com.example.a3dprint.Screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,6 +60,7 @@ object FinancieScreenDest : NavigationDestination {
     override val titleRes = R.string.text_financie
 }
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinancieScreen(
@@ -70,6 +72,7 @@ fun FinancieScreen(
     val totalProfit by viewModel.totalProfit.collectAsState()
 
     Scaffold(
+        containerColor = colorResource(id = R.color.blue1),
         bottomBar = {
             NavigationBar(
                 containerColor = colorResource(id = R.color.blue3)
@@ -113,7 +116,7 @@ fun FinancieScreen(
                             .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.text_filamenty))
+                        Text(stringResource(R.string.text_financie))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -121,23 +124,22 @@ fun FinancieScreen(
                 )
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {  }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Filament")
-            }
-        },
 
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(top = 32.dp),
+                .padding(top = 32.dp)
+                .background(colorResource(id = R.color.blue1)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Celkový profit", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(String.format("%.2f €", totalProfit), fontSize = 24.sp)
+            Text(
+                text = String.format("%.2f €", totalProfit),
+                fontSize = 24.sp
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
