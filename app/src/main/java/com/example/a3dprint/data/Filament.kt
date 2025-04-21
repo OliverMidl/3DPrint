@@ -1,7 +1,9 @@
 package com.example.a3dprint.data
 
+import android.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.a3dprint.R
 
 @Entity(tableName = "filaments")
 data class Filament(
@@ -11,5 +13,6 @@ data class Filament(
     val price: Double,
     val maxWeight: Int,
     val currentWeight: Int = maxWeight,
-    val photoUri: String? = null
+    val photoUri: String? = null,
+    val colorHex: String = "#FFFFFFFF"
 )

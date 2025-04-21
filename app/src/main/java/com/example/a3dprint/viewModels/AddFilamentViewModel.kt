@@ -2,7 +2,11 @@ package com.example.a3dprint.viewModels
 
 import android.app.Application
 import android.net.Uri
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dprint.data.Filament
@@ -15,13 +19,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import com.example.a3dprint.R
 
 data class AddFilamentUiState(
     val name: String = "",
     val description: String = "",
     val price: String = "",
     val weight: String = "",
-    val photoUri: String? = null
+    val photoUri: String? = null,
+    val selectedColor: String? = null
 ) {
     val isValid: Boolean
         get() = name.isNotBlank() && price.toDoubleOrNull() != null && weight.toIntOrNull() != null && !photoUri.isNullOrEmpty()
@@ -51,6 +57,9 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
         showPhotoOptions.value = !showPhotoOptions.value
     }
 
+    fun updateSelectedColor(colorResId: String) {
+        _uiState.value = _uiState.value.copy(selectedColor = colorResId)
+    }
 
     fun updateName(name: String) = _uiState.value.copy(name = name).also { _uiState.value = it }
     fun updateDescription(desc: String) = _uiState.value.copy(description = desc).also { _uiState.value = it }
@@ -66,6 +75,7 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
 
     fun saveEntry(onSaved: () -> Unit) {
         val state = _uiState.value
+
         if (state.isValid) {
             viewModelScope.launch {
                 repository.insert(
@@ -74,7 +84,8 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
                         description = state.description,
                         price = state.price.toDouble(),
                         maxWeight = state.weight.toInt(),
-                        photoUri = state.photoUri?.toString()
+                        photoUri = state.photoUri?.toString(),
+                        colorHex = state.selectedColor.toString()
                     )
                 )
                 onSaved()

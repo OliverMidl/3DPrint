@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
@@ -38,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +49,7 @@ import com.example.a3dprint.viewModels.FilamentViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.R
+import androidx.core.graphics.toColorInt
 
 object FilamentyScreenDest : NavigationDestination {
     override val route = "filamenty"
@@ -62,6 +66,7 @@ fun FilamentyScreen(
 ) {
     val filaments = viewModel.filaments.collectAsState().value
     //var selectedTab by remember { mutableStateOf(1) }
+
 
     Scaffold(
         bottomBar = {
@@ -126,9 +131,16 @@ fun FilamentyScreen(
                 .padding(padding)
                 .background(colorResource(id = R.color.blue1))
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
 
         ) {
             filaments.forEach { filament ->
+                val color = try {
+                    Color(filament.colorHex.toColorInt()) // Parse hex to Color
+                } catch (e: IllegalArgumentException) {
+                    Color.Gray // Default color if parsing fails
+                }
+
                 Card(
 
                     modifier = Modifier
@@ -136,7 +148,7 @@ fun FilamentyScreen(
                         .padding(8.dp),
 
                     shape = RoundedCornerShape(13.dp),
-                    colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.blue2)),
+                    colors = CardDefaults.cardColors(containerColor = colorResource(R.color.blue2)),
                 ) {
                     Row(
                         modifier = Modifier
@@ -147,12 +159,12 @@ fun FilamentyScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
 
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically,) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
                                     .clip(CircleShape)
-                                    .background(colorResource(id = R.color.teal_200))
+                                    .background(color)
 
 
                             )
@@ -164,8 +176,10 @@ fun FilamentyScreen(
 
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(filament.name, style = MaterialTheme.typography.bodyLarge,
-                                    textAlign = TextAlign.Center,)
+                                Text(
+                                    filament.name, style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center,
+                                )
                                 Text(
                                     "${filament.currentWeight}g / ${filament.maxWeight}g",
                                     style = MaterialTheme.typography.bodySmall,

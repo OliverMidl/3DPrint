@@ -12,4 +12,15 @@
     <color name="blue3">#FF2E8BC0</color>
     <color name="blue4">#0C2D48FF</color>
     <color name="dark_grey">#424242</color>
+    <color name="filament_red">#FF0000</color>
+    <color name="filament_blue">#0000FF</color>
+    <color name="filament_green">#00FF00</color>
+    <color name="filament_yellow">#FFFF00</color>
+    <color name="filament_purple">#800080</color>
+    <color name="filament_gold">#B8860B</color>
+    <color name="filament_black">#000000</color>
+    <color name="filament_white">#FFFFFF</color>
+    <color name="filament_gray">#808080</color>
+    <color name="filament_brown">#8D6E63</color>
 </resources>
+

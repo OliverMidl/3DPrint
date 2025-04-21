@@ -33,6 +33,10 @@ import com.example.a3dprint.viewModels.AddFilamentViewModel
 import android.Manifest
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -41,6 +45,20 @@ object AddFilamentScreenDest : NavigationDestination {
     override val route = "pridat_filament"
     override val titleRes = R.string.text_filamenty
 }
+val predefinedColors = listOf(
+    R.color.filament_red,
+    R.color.filament_blue,
+    R.color.filament_green,
+    R.color.filament_yellow,
+    R.color.filament_purple,
+    R.color.filament_gold,
+    R.color.filament_black,
+    R.color.filament_white,
+    R.color.filament_gray,
+    R.color.filament_brown
+)
+
+
 
 @SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -221,6 +239,40 @@ fun AddFilamentScreen(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
+            Text("Vyber farbu filamentu:")
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                predefinedColors.forEach { colorResId ->
+                    val colorInt = ContextCompat.getColor(context, colorResId)
+                    val colorHex = String.format("#%06X", 0xFFFFFF and colorInt)
+                    val isSelected = uiState.selectedColor.toString() == colorHex
+
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(4.dp)
+                            .background(
+                                color = androidx.compose.ui.graphics.Color(colorInt),
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .border(
+                                width = if (isSelected) 3.dp else 1.dp,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .clickable {
+
+                                viewModel.updateSelectedColor(colorHex)
+                            }
+                    )
+                }
+            }
 
             Button(
                 onClick = { viewModel.saveEntry(onNavigateBack) },
