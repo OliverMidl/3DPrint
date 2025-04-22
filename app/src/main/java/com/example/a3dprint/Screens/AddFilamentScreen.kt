@@ -40,6 +40,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import java.io.File
+import java.io.FileOutputStream
 
 object AddFilamentScreenDest : NavigationDestination {
     override val route = "pridat_filament"
@@ -74,13 +76,28 @@ fun AddFilamentScreen(
     //var cameraPermissionGranted by remember { mutableStateOf(false) }
    // var photoUri by remember { mutableStateOf<Uri?>(null) }
 
+    fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
+        val contentResolver = context.contentResolver
+        val inputStream = contentResolver.openInputStream(imageUri)
+        val fileName = "filament_${System.currentTimeMillis()}.jpg"
+        val file = File(context.filesDir, fileName)
+        val outputStream = FileOutputStream(file)
+
+        inputStream?.copyTo(outputStream)
+        inputStream?.close()
+        outputStream.close()
+
+        return file.toUri()
+    }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success) {
             viewModel.photoUri.value?.let { uri ->
-                viewModel.updatePhotoUri(uri.toString())
+                //viewModel.updatePhotoUri(uri.toString())
+                val savedUri = saveImageToStorage(context, uri)
+                viewModel.updatePhotoUri(savedUri.toString())
             }
         }
     }
@@ -114,8 +131,10 @@ fun AddFilamentScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-            //photoUri = it
-            viewModel.updatePhotoUri(it.toString())
+
+           // viewModel.updatePhotoUri(it.toString())
+            val savedUri = saveImageToStorage(context, it)
+            viewModel.updatePhotoUri(savedUri.toString())
         }
     }
 

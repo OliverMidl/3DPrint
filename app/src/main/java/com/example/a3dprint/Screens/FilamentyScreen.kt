@@ -62,7 +62,8 @@ fun FilamentyScreen(
     viewModel: FilamentViewModel = viewModel(),
     onNavigateToZakazky: () -> Unit,
     onNavigateToFinancie: () -> Unit,
-    onNavigateToAddFilament: () -> Unit
+    onNavigateToAddFilament: () -> Unit,
+    onNavigateToFilamentDetail: (Int) -> Unit
 ) {
     val filaments = viewModel.filaments.collectAsState().value
     //var selectedTab by remember { mutableStateOf(1) }
@@ -136,9 +137,9 @@ fun FilamentyScreen(
         ) {
             filaments.forEach { filament ->
                 val color = try {
-                    Color(filament.colorHex.toColorInt()) // Parse hex to Color
+                    Color(filament.colorHex.toColorInt())
                 } catch (e: IllegalArgumentException) {
-                    Color.Gray // Default color if parsing fails
+                    Color.Gray
                 }
 
                 Card(
@@ -189,12 +190,10 @@ fun FilamentyScreen(
 
                             }
                             Spacer(modifier = Modifier.weight(1f))
-                            IconButton(onClick = { }) {
-
-                                Icon(Icons.Default.Settings,
-                                    contentDescription = "Nastavenia",
-                                    modifier = Modifier.size(25.dp)
-                                )
+                            IconButton(onClick = {
+                                onNavigateToFilamentDetail(filament.id)
+                            }) {
+                                Icon(imageVector = Icons.Default.Settings, contentDescription = "Nastavenia")
                             }
                         }
 

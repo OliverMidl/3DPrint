@@ -11,4 +11,12 @@ interface FilamentDao {
     @Query("SELECT * FROM filaments")
     fun getAllFilaments(): Flow<List<Filament>>
 
+    @Query("SELECT * FROM filaments WHERE id = :id")
+    fun getFilamentById(id: Int): Flow<Filament?>
+
+    @Query("DELETE FROM filaments WHERE id = :filamentId")
+    suspend fun deleteFilamentById(filamentId: Int)
+
+    @Query("UPDATE filaments SET currentWeight = currentWeight + :weight WHERE id = :filamentId")
+    suspend fun updateFilamentById(filamentId: Int, weight: Int)
 }
