@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class FilamentDetailViewModel(
-    private val savedStateHandle: SavedStateHandle,
     private val filamentDao: FilamentDao
 ) : ViewModel() {
 

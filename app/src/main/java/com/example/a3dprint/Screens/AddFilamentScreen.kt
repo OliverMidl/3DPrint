@@ -70,11 +70,7 @@ fun AddFilamentScreen(
     viewModel: AddFilamentViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
     val context = LocalContext.current
-   // var showPhotoOptions by remember { mutableStateOf(false) }
-    //var cameraPermissionGranted by remember { mutableStateOf(false) }
-   // var photoUri by remember { mutableStateOf<Uri?>(null) }
 
     fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
         val contentResolver = context.contentResolver

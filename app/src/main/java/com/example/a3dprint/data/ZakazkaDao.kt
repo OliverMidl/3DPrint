@@ -18,4 +18,10 @@ interface ZakazkaDao {
     @Query("SELECT SUM(cena) FROM zakazky")
     suspend fun getTotalPrice(): Double?
 
+    @Query("SELECT * FROM zakazky WHERE id = :id")
+    fun getZakazkaById(id: Int): Flow<Zakazka?>
+
+    @Query("DELETE FROM zakazky  WHERE id = :id")
+    suspend fun deleteZakazkaById(id: Int)
+
 }

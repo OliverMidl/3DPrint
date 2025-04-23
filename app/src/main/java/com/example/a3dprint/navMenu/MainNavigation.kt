@@ -17,6 +17,8 @@ import com.example.a3dprint.Screens.AddFilamentScreen
 import com.example.a3dprint.Screens.AddFilamentScreenDest
 import com.example.a3dprint.Screens.AddZakazkaScreen
 import com.example.a3dprint.Screens.AddZakazkaScreenDest
+import com.example.a3dprint.Screens.ZakazkaDetailScreen
+import com.example.a3dprint.Screens.ZakazkaDetailScreenDest
 import com.example.a3dprint.Screens.FilamentDetailScreen
 import com.example.a3dprint.Screens.FilamentDetailScreenDest
 
@@ -41,6 +43,10 @@ fun MainNavigation(
             },
                 onNavigateToAddZakazka = {
                     navController.navigate(route = AddZakazkaScreenDest.route)
+            },
+
+                onNavigateToDetailZakazka = { zakazkaId ->
+                    navController.navigate("${ZakazkaDetailScreenDest.route}/$zakazkaId")
                 }
             )
         }
@@ -86,16 +92,27 @@ fun MainNavigation(
                 type = NavType.IntType
             })
         ) { navBackStackEntry ->
-            // Získame 'filamentId' z arguments navBackStackEntry
             val filamentId = navBackStackEntry.arguments?.getInt(FilamentDetailScreenDest.filamentIdArg)
 
-            // Skontrolujeme, či máme platný 'filamentId'
             filamentId?.let {
-                // Ak máme platný 'filamentId', zavoláme FilamentDetailScreen s týmto ID
                 FilamentDetailScreen(
-                    filamentId = it, // Odovzdávame 'filamentId'
-                    onBack = { navController.popBackStack() }, // Definujeme akciu pre návrat
-                    navBackStackEntry = navBackStackEntry // Odovzdávame aj navBackStackEntry
+                    filamentId = it,
+                    onBack = { navController.popBackStack() },
+                )
+            }
+        }
+        composable(
+            route = ZakazkaDetailScreenDest.routeWithArgs,
+            arguments = listOf(navArgument(ZakazkaDetailScreenDest.zakazkaIdArg) {
+                type = NavType.IntType
+            })
+        ) { navBackStackEntry ->
+            val zakazkaId = navBackStackEntry.arguments?.getInt(ZakazkaDetailScreenDest.zakazkaIdArg)
+
+            zakazkaId?.let {
+                ZakazkaDetailScreen(
+                    zakazkaId = it,
+                    onBack = { navController.popBackStack() },
                 )
             }
         }

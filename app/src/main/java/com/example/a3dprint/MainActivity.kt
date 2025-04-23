@@ -29,8 +29,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-/*
- <string name="route_zakazky">zakazky</string>
-    <string name="route_filamenty">filamenty</string>
-    <string name="route_financie">financie</string>
- */

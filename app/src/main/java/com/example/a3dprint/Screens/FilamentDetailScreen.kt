@@ -65,18 +65,14 @@ object FilamentDetailScreenDest : NavigationDestination {
 fun FilamentDetailScreen(
     filamentId: Int,
     onBack: () -> Unit,
-    navBackStackEntry: NavBackStackEntry,
-    //viewModel: FilamentDetailViewModel = viewModel()
+
 ) {
 
     val context = LocalContext.current
     val filamentDao = AppDatabase.getDatabase(context).filamentDao()
 
-    val savedStateHandle: SavedStateHandle = navBackStackEntry.savedStateHandle
-
-
     val viewModel: FilamentDetailViewModel = viewModel(
-        factory = FilamentDetailViewModelFactory(filamentDao, savedStateHandle)
+        factory = FilamentDetailViewModelFactory(filamentDao)
     )
     val filament by viewModel.getFilamentById(filamentId).collectAsState(initial = null)
     Scaffold(
