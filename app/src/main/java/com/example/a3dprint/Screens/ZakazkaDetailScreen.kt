@@ -27,9 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import coil.compose.rememberAsyncImagePainter
 import com.example.a3dprint.R
 import com.example.a3dprint.data.AppDatabase
@@ -109,7 +107,7 @@ fun ZakazkaDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("Názov: ${zakazkaData.popis}")
                 Text("Popis: ${zakazkaData.cena}")
-
+                Text("Datum: ${zakazkaData.datum}")
 
 
                 Spacer(modifier = Modifier.height(8.dp))

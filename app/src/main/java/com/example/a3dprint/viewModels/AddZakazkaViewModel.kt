@@ -1,5 +1,6 @@
 package com.example.a3dprint.viewModels
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
 
 data class AddZakazkaUiState(
     val popis: String = "",
@@ -45,6 +48,19 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
 
     fun toggleShowPhotoOptions() {
         showPhotoOptions.value = !showPhotoOptions.value
+    }
+
+    val selectedDateMillis = mutableStateOf<Long?>(null)
+    @SuppressLint("SimpleDateFormat")
+    fun updateSelectedDate(millis: Long) {
+        selectedDateMillis.value = millis
+        val formatted = SimpleDateFormat("dd.MM.yyyy").format(Date(millis))
+        updateDatum(formatted)
+    }
+
+    val openDateDialog = mutableStateOf(false)
+    fun toggleDateDialog(open: Boolean) {
+        openDateDialog.value = open
     }
 
     private val _uiState = MutableStateFlow(AddZakazkaUiState())

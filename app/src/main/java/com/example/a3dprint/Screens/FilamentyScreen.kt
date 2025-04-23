@@ -66,8 +66,6 @@ fun FilamentyScreen(
     onNavigateToFilamentDetail: (Int) -> Unit
 ) {
     val filaments = viewModel.filaments.collectAsState().value
-    //var selectedTab by remember { mutableStateOf(1) }
-
 
     Scaffold(
         bottomBar = {

@@ -1,6 +1,7 @@
 package com.example.a3dprint.Screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
@@ -10,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,6 +24,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +44,7 @@ object AddZakazkaScreenDest : NavigationDestination {
     override val route = "pridat_zakazku"
     override val titleRes = R.string.text_zakazky
 }
+@SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddZakazkaScreen(
@@ -113,6 +118,32 @@ fun AddZakazkaScreen(
             viewModel.updatePhotoUri(savedUri.toString())
         }
     }
+
+    val openDateDialog by viewModel.openDateDialog
+    val datePickerState = rememberDatePickerState()
+
+
+    if (openDateDialog) {
+        DatePickerDialog(
+            onDismissRequest = { viewModel.toggleDateDialog(false) },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { viewModel.updateSelectedDate(it) }
+                    viewModel.toggleDateDialog(false)
+                }) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.toggleDateDialog(false) }) {
+                    Text("Zrušiť")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
 
     Scaffold(
         topBar = {
@@ -197,18 +228,32 @@ fun AddZakazkaScreen(
                     )
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+            ) {
+                OutlinedTextField(
+                    value = uiState.datum,
+                    onValueChange = {},
+                    label = { Text("Dátum") },
+                    readOnly = true,
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clickable { viewModel.toggleDateDialog(true) }
+                        .background(Color.Transparent)
+                )
+            }
             OutlinedTextField(
                 value = uiState.popis,
                 onValueChange = viewModel::updatePopis,
                 label = { Text("Názov zákazky") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            OutlinedTextField(
-                value = uiState.datum,
-                onValueChange = viewModel::updateDatum,
-                label = { Text("Datum") }, // zmenit!!!!
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
