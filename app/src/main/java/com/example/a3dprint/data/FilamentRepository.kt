@@ -7,7 +7,4 @@ class FilamentRepository(private val dao: FilamentDao) {
         dao.insert(filament)
     }
 
-    suspend fun deleteFilamentById(filamentId: Int) {
-        dao.deleteFilamentById(filamentId)
-    }
 }

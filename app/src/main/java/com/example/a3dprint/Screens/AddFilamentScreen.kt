@@ -24,21 +24,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.R
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.AddFilamentViewModel
 import android.Manifest
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.core.net.toUri
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import java.io.File
 import java.io.FileOutputStream

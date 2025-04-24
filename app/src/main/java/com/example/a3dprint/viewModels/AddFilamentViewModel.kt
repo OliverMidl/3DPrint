@@ -2,24 +2,15 @@ package com.example.a3dprint.viewModels
 
 import android.app.Application
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dprint.data.Filament
 import com.example.a3dprint.data.AppDatabase
 import com.example.a3dprint.data.FilamentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import androidx.core.net.toUri
-import com.example.a3dprint.R
 
 data class AddFilamentUiState(
     val name: String = "",

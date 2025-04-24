@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -153,7 +152,6 @@ fun FilamentyScreen(
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                            //.background(colorResource(id = R.color.purple_200)),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
 
@@ -171,7 +169,6 @@ fun FilamentyScreen(
                             Column(
                                 modifier = Modifier
                                     .offset(x = 20.dp, y = 0.dp),
-                             //       .background(colorResource(id = R.color.blue2)),
 
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {

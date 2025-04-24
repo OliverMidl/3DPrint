@@ -15,6 +15,12 @@ interface ZakazkaDao {
     @Query("SELECT * FROM zakazky")
     fun getAllZakazka(): Flow<List<Zakazka>>
 
+    @Query("SELECT count(*) FROM zakazky")
+    fun getCount(): Int
+
+    @Query("SELECT sum(cena) FROM zakazky")
+    fun getSumPrize(): Double
+
     @Query("SELECT SUM(cena) FROM zakazky")
     suspend fun getTotalPrice(): Double?
 

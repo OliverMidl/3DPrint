@@ -2,6 +2,7 @@ package com.example.a3dprint.data
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import kotlin.collections.List
 
 @Dao
 interface FilamentDao {
@@ -14,9 +15,14 @@ interface FilamentDao {
     @Query("SELECT * FROM filaments WHERE id = :id")
     fun getFilamentById(id: Int): Flow<Filament?>
 
+    @Query("SELECT count(*) FROM filaments")
+    fun getCount(): Int
+
     @Query("DELETE FROM filaments WHERE id = :filamentId")
     suspend fun deleteFilamentById(filamentId: Int)
 
     @Query("UPDATE filaments SET currentWeight = currentWeight + :weight WHERE id = :filamentId")
     suspend fun updateFilamentById(filamentId: Int, weight: Int)
+
+
 }

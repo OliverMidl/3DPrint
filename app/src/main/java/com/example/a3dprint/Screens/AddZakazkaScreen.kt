@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -53,9 +52,6 @@ fun AddZakazkaScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-    // var showPhotoOptions by remember { mutableStateOf(false) }
-    //var cameraPermissionGranted by remember { mutableStateOf(false) }
-    // var photoUri by remember { mutableStateOf<Uri?>(null) }
 
     fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
         val contentResolver = context.contentResolver
@@ -76,7 +72,6 @@ fun AddZakazkaScreen(
     ) { success ->
         if (success) {
             viewModel.photoUri.value?.let { uri ->
-                //viewModel.updatePhotoUri(uri.toString())
                 val savedUri = saveImageToStorage(context, uri)
                 viewModel.updatePhotoUri(savedUri.toString())
             }
@@ -112,8 +107,6 @@ fun AddZakazkaScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-
-            // viewModel.updatePhotoUri(it.toString())
             val savedUri = saveImageToStorage(context, it)
             viewModel.updatePhotoUri(savedUri.toString())
         }

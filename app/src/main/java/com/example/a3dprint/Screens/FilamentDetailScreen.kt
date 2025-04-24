@@ -1,22 +1,17 @@
 package com.example.a3dprint.Screens
 
-import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,18 +32,9 @@ import com.example.a3dprint.data.Filament
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.FilamentDetailViewModel
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavBackStackEntry
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
-import com.example.a3dprint.data.AppDatabase
-import com.example.a3dprint.viewModels.FilamentDetailViewModelFactory
 import androidx.core.net.toUri
-import coil.compose.rememberAsyncImagePainter
-import com.example.a3dprint.viewModels.AddFilamentViewModel
+
 
 
 object FilamentDetailScreenDest : NavigationDestination {
@@ -66,14 +52,10 @@ fun FilamentDetailScreen(
     filamentId: Int,
     onBack: () -> Unit,
 
+    viewModel: FilamentDetailViewModel = viewModel(),
+
 ) {
 
-    val context = LocalContext.current
-    val filamentDao = AppDatabase.getDatabase(context).filamentDao()
-
-    val viewModel: FilamentDetailViewModel = viewModel(
-        factory = FilamentDetailViewModelFactory(filamentDao)
-    )
     val filament by viewModel.getFilamentById(filamentId).collectAsState(initial = null)
     Scaffold(
         topBar = {

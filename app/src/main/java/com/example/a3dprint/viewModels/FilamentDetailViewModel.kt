@@ -1,17 +1,16 @@
 package com.example.a3dprint.viewModels
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.a3dprint.data.AppDatabase
 import com.example.a3dprint.data.Filament
-import com.example.a3dprint.data.FilamentDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class FilamentDetailViewModel(
-    private val filamentDao: FilamentDao
-) : ViewModel() {
+class FilamentDetailViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val filamentDao = AppDatabase.getDatabase(application).filamentDao()
 
     fun getFilamentById(id: Int): Flow<Filament?> {
         return filamentDao.getFilamentById(id)

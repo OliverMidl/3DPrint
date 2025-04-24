@@ -8,6 +8,6 @@ data class Zakazka(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val popis: String,
     val datum: String,
-    val cena: Float,
+    val cena: Double,
     val photoUri: String? = null,
 )

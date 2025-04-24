@@ -21,6 +21,8 @@ import com.example.a3dprint.Screens.ZakazkaDetailScreen
 import com.example.a3dprint.Screens.ZakazkaDetailScreenDest
 import com.example.a3dprint.Screens.FilamentDetailScreen
 import com.example.a3dprint.Screens.FilamentDetailScreenDest
+import com.example.a3dprint.Screens.StatistikaScreen
+import com.example.a3dprint.Screens.StatistikaScreenDest
 
 
 @Composable
@@ -73,7 +75,15 @@ fun MainNavigation(
             },
                 onNavigateToFilamenty = {
                     navController.navigate(route = FilamentyScreenDest.route)
+                },
+                onStatisticsClick = {
+                    navController.navigate(route = StatistikaScreenDest.route)
                 }
+            )
+        }
+        composable(route = StatistikaScreenDest.route) {
+            StatistikaScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
         composable(route = AddFilamentScreenDest.route) {

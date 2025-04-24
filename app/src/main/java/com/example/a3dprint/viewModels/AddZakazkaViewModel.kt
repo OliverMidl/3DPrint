@@ -11,9 +11,6 @@ import com.example.a3dprint.data.Zakazka
 import com.example.a3dprint.data.ZakazkaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -80,7 +77,7 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
                     Zakazka(
                         popis = state.popis,
                         datum = state.datum,
-                        cena = state.cena.toFloat(),
+                        cena = state.cena.toDouble(),
                         photoUri = state.photoUri?.toString(),
                     )
                 )

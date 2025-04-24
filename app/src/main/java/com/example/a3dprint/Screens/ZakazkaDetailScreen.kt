@@ -23,18 +23,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.a3dprint.R
-import com.example.a3dprint.data.AppDatabase
 import com.example.a3dprint.data.Zakazka
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.ZakazkaDetailViewModel
-import com.example.a3dprint.viewModels.ZakazkaDetailViewModelFactory
+
 
 object ZakazkaDetailScreenDest : NavigationDestination {
     override val route = "zakazka_detail"
@@ -50,14 +48,10 @@ object ZakazkaDetailScreenDest : NavigationDestination {
 fun ZakazkaDetailScreen(
     zakazkaId: Int,
     onBack: () -> Unit,
+    viewModel: ZakazkaDetailViewModel = viewModel(),
 
-) {
 
-    val context = LocalContext.current
-    val zakazkaDao = AppDatabase.getDatabase(context).zakazkaDao()
-    val viewModel: ZakazkaDetailViewModel = viewModel(
-        factory = ZakazkaDetailViewModelFactory(zakazkaDao)
-    )
+    ) {
     val zakazka by viewModel.getZakazkaById(zakazkaId).collectAsState(initial = null)
 
     Scaffold(
