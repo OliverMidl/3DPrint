@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.a3dprint"
-        minSdk = 32
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
 
 

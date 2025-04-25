@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
@@ -38,6 +39,8 @@ import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.AddZakazkaViewModel
 import java.io.File
 import java.io.FileOutputStream
+import android.provider.Settings
+import androidx.compose.runtime.Composable
 
 object AddZakazkaScreenDest : NavigationDestination {
     override val route = "pridat_zakazku"
@@ -52,6 +55,17 @@ fun AddZakazkaScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
+    val isNotificationPermissionRequired by remember { viewModel.checkAndRequestNotificationPermissionRequired }
+
+    if (isNotificationPermissionRequired) {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        }
+        context.startActivity(intent)
+
+        viewModel.checkAndRequestNotificationPermissionRequired.value = false
+    }
 
     fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
         val contentResolver = context.contentResolver

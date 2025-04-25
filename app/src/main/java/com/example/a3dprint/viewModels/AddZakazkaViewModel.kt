@@ -4,16 +4,20 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.a3dprint.data.AppDatabase
 import com.example.a3dprint.data.Zakazka
 import com.example.a3dprint.data.ZakazkaRepository
+import com.example.a3dprint.notification.scheduleNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+
+
 
 data class AddZakazkaUiState(
     val popis: String = "",
@@ -69,6 +73,19 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
     fun updatePhotoUri(uri: String) {
         _uiState.value = _uiState.value.copy(photoUri = uri)
     }
+
+    val checkAndRequestNotificationPermissionRequired = mutableStateOf(false)
+
+
+    fun checkAndRequestNotificationPermission() {
+        val notificationManager = NotificationManagerCompat.from(getApplication<Application>())
+        if (!notificationManager.areNotificationsEnabled()) {
+            checkAndRequestNotificationPermissionRequired.value = true
+        }
+    }
+
+
+
     fun saveEntry(onSaved: () -> Unit) {
         val state = _uiState.value
         if (state.isValid) {
@@ -81,6 +98,9 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
                         photoUri = state.photoUri?.toString(),
                     )
                 )
+                val context = getApplication<Application>().applicationContext
+                checkAndRequestNotificationPermission()
+                scheduleNotification(context, state.popis, state.datum)
                 onSaved()
             }
         }

@@ -77,10 +77,12 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
                         maxWeight = state.weight.toInt(),
                         photoUri = state.photoUri?.toString(),
                         colorHex = state.selectedColor.toString()
-                    )
+                    ) ,
+
                 )
-                onSaved()
+
             }
         }
+
     }
 }
