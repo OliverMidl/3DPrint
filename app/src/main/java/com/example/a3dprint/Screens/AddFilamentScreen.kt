@@ -35,6 +35,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.res.colorResource
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import java.io.File
@@ -136,7 +137,9 @@ fun AddFilamentScreen(
             TopAppBar(
                 title = {
                     Box(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(x = (-22).dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(id = R.string.text_filamenty))
@@ -148,9 +151,13 @@ fun AddFilamentScreen(
                             contentDescription = "Back"
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.blue3)
+                )
             )
-        }
+        },
+        containerColor = colorResource(id = R.color.blue1)
     ) {innerPadding ->
         if (viewModel.showPhotoOptions.value) {
             AlertDialog(
@@ -184,7 +191,9 @@ fun AddFilamentScreen(
 
         Column(
             modifier = Modifier
+                .fillMaxHeight()
                 .padding(innerPadding)
+                .background(colorResource(id = R.color.blue1))
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)

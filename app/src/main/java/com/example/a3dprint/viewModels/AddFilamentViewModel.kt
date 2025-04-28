@@ -78,9 +78,8 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
                         photoUri = state.photoUri?.toString(),
                         colorHex = state.selectedColor.toString()
                     ) ,
-
                 )
-
+                onSaved()
             }
         }
 

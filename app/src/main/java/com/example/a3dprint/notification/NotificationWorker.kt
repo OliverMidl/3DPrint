@@ -14,6 +14,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.a3dprint.R
+import java.time.LocalDateTime
 
 class NotificationWorker(
     appContext: Context,
@@ -55,11 +56,16 @@ fun scheduleNotification(context: Context, zakazkaName: String, date: String) {
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     val localDate = LocalDate.parse(date, formatter)
 
-    val delay = Duration.between(LocalDate.now().atStartOfDay(), localDate.atStartOfDay()).toMillis() + (8 * 60 * 60 * 1000L)
+    val now = LocalDateTime.now()
+    val targetDateTime = localDate.atTime(8, 0)
+
+    val delayMillis = Duration.between(now, targetDateTime).toMillis()
+
+    //val delay = Duration.between(LocalDate.now().atStartOfDay(), localDate.atStartOfDay()).toMillis() + (8 * 60 * 60 * 1000L)
     //val delay = 10 * 1000L // 10 sekund
-    if (delay > 0) {
+    if (delayMillis > 0) {
         val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInitialDelay(delayMillis, TimeUnit.MILLISECONDS)
             .setInputData(workDataOf("zakazka_popis" to zakazkaName))
             .build()
 

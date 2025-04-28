@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -18,13 +19,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
@@ -57,26 +62,39 @@ fun ZakazkaDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Detail zakazky") },
+                title = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(x = (-22).dp),
+                            //.clip(RoundedCornerShape(16.dp)),
+                        contentAlignment = Alignment.Center) {
+                        Text("Detail zakazky")}
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.blue3)
+                )
             )
-        }
+        },
+        containerColor = colorResource(id = R.color.blue1)
     ) { innerPadding ->
         zakazka?.let { zakazkaData: Zakazka ->
 
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
+                        .height(400.dp)
                 ) {
                     val imageUri = zakazkaData.photoUri?.toUri()
 
@@ -98,13 +116,30 @@ fun ZakazkaDetailScreen(
                 }
 
 
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Názov: ${zakazkaData.popis}")
-                Text("Popis: ${zakazkaData.cena}")
-                Text("Datum: ${zakazkaData.datum}")
+                Spacer(modifier = Modifier.height(30.dp))
+                Text(
+                    text = "Názov: ${zakazkaData.popis}",
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "Popis: ${zakazkaData.nazov}",
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "Typ: ${zakazkaData.typ}",
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "Cena: ${zakazkaData.cena}",
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "Dátum: ${zakazkaData.datum}",
+                    fontSize = 20.sp
+                )
 
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(50.dp))
 
                 Button(
                     onClick = {

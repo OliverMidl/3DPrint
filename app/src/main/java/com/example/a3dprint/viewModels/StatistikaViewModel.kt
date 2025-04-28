@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 data class StatistikaUiState(
     val pocetZakaziek: Int = 0,
     val celkovyZarobok: Double? = 0.0,
-    val spotrebaFilamentu: Double = 0.0
+    val aktualneNaSkladeFilament: Double = 0.0,
+    val pocetFilament: Int = 0,
 )
 
 class StatistikaViewModel(application: Application) : AndroidViewModel(application) {
@@ -42,14 +43,16 @@ class StatistikaViewModel(application: Application) : AndroidViewModel(applicati
     private fun nacitajStatistiky() {
         viewModelScope.launch {
             combine(zakazky, filamenty) { zakazkyList, filamentyList ->
-                val pocet = zakazkyList.size
+                val pocetZakazka = zakazkyList.size
                 val zarobok = zakazkyList.sumOf { it.cena.toDouble() }
-                val spotreba = filamentyList.sumOf { it.currentWeight.toDouble() }
+                val aktualneNaSkladeFilament = filamentyList.sumOf { it.currentWeight.toDouble() }
+                val pocetFilament = filamentyList.size
 
                 StatistikaUiState(
-                    pocetZakaziek = pocet,
+                    pocetZakaziek = pocetZakazka,
                     celkovyZarobok = zarobok,
-                    spotrebaFilamentu = spotreba
+                    aktualneNaSkladeFilament = aktualneNaSkladeFilament,
+                    pocetFilament = pocetFilament,
                 )
             }.collect { statistika ->
                 _statistika.value = statistika

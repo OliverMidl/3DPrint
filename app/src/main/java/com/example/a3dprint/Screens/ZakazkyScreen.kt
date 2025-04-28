@@ -90,6 +90,7 @@ fun ZakazkyScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .offset(x = (-6).dp)
                             .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {

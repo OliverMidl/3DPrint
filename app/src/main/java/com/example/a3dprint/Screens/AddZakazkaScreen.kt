@@ -40,12 +40,29 @@ import com.example.a3dprint.viewModels.AddZakazkaViewModel
 import java.io.File
 import java.io.FileOutputStream
 import android.provider.Settings
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.colorResource
 
 object AddZakazkaScreenDest : NavigationDestination {
     override val route = "pridat_zakazku"
     override val titleRes = R.string.text_zakazky
 }
+
+val predefinedColorsZakazka = listOf(
+    R.color.filament_red,
+    R.color.filament_blue,
+    R.color.filament_green,
+    R.color.filament_yellow,
+    R.color.filament_purple,
+    R.color.filament_gold,
+    R.color.filament_black,
+    R.color.filament_white,
+    R.color.filament_gray,
+    R.color.filament_brown
+)
+
 @SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,7 +109,7 @@ fun AddZakazkaScreen(
         }
     }
 
-    fun createImageUri(context: Context): Uri {
+    fun createImageUri(): Uri {
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "photo_${System.currentTimeMillis()}.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
@@ -101,7 +118,7 @@ fun AddZakazkaScreen(
     }
 
     fun launchCamera() {
-        val uri = createImageUri(context)
+        val uri = createImageUri()
         viewModel.photoUri.value = uri
         cameraLauncher.launch(uri)
     }
@@ -155,21 +172,27 @@ fun AddZakazkaScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(id = R.string.text_zakazky))
-                    }
-                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
                     }
-                }
+                },
+                title = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(x = (-22).dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(stringResource(id = R.string.text_zakazky))
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorResource(id = R.color.blue3)
+                )
             )
-        }
+        },
+        containerColor = colorResource(id = R.color.blue1)
     ) { innerPadding ->
         if (viewModel.showPhotoOptions.value) {
             AlertDialog(
@@ -204,7 +227,9 @@ fun AddZakazkaScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .background(colorResource(id = R.color.blue1))
                 .padding(16.dp)
+                .fillMaxHeight()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -235,6 +260,23 @@ fun AddZakazkaScreen(
                     )
                 }
             }
+            OutlinedTextField(
+                value = uiState.popis,
+                onValueChange = viewModel::updatePopis,
+                label = { Text("Názov zákazky") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+            OutlinedTextField(
+                value = uiState.nazov,
+                onValueChange = viewModel::updateNazov,
+                label = { Text("Popis zákazky") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+
 
             Box(
                 modifier = Modifier
@@ -257,13 +299,50 @@ fun AddZakazkaScreen(
                         .background(Color.Transparent)
                 )
             }
+
             OutlinedTextField(
-                value = uiState.popis,
-                onValueChange = viewModel::updatePopis,
-                label = { Text("Názov zákazky") },
+                value = uiState.typ,
+                onValueChange = viewModel::updateTyp,
+                label = { Text("Typ filamentu") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
+
+            Text("Vyber farbu filamentu:")
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                predefinedColorsZakazka.forEach { colorResId ->
+                    val colorInt = ContextCompat.getColor(context, colorResId)
+                    val colorHex = String.format("#%06X", 0xFFFFFF and colorInt)
+                    val isSelected = uiState.selectedColor.toString() == colorHex
+
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(4.dp)
+                            .background(
+                                color = Color(colorInt),
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .border(
+                                width = if (isSelected) 3.dp else 1.dp,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .clickable {
+
+                                viewModel.updateSelectedColor(colorHex)
+                            }
+                    )
+                }
+            }
+
 
             OutlinedTextField(
                 value = uiState.cena,

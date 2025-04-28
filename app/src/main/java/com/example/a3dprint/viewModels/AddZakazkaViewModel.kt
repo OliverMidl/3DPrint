@@ -23,7 +23,10 @@ data class AddZakazkaUiState(
     val popis: String = "",
     val datum: String = "",
     val cena: String = "",
+    val nazov: String = "",
     val photoUri: String? = null,
+    val selectedColor: String? = null,
+    val typ: String = ""
 ) {
     val isValid: Boolean
         get() = popis.isNotBlank() && datum.isNotBlank() && cena.toDoubleOrNull() != null
@@ -68,10 +71,15 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
     val uiState: StateFlow<AddZakazkaUiState> = _uiState
 
     fun updatePopis(title: String) = _uiState.value.copy(popis = title).also { _uiState.value = it }
+    fun updateTyp(type: String) = _uiState.value.copy(typ = type).also { _uiState.value = it }
+    fun updateNazov(name: String) = _uiState.value.copy(nazov = name).also { _uiState.value = it }
     fun updateDatum(customer: String) = _uiState.value.copy(datum = customer).also { _uiState.value = it }
     fun updateCena(price: String) = _uiState.value.copy(cena = price).also { _uiState.value = it }
     fun updatePhotoUri(uri: String) {
         _uiState.value = _uiState.value.copy(photoUri = uri)
+    }
+    fun updateSelectedColor(colorResId: String) {
+        _uiState.value = _uiState.value.copy(selectedColor = colorResId)
     }
 
     val checkAndRequestNotificationPermissionRequired = mutableStateOf(false)
@@ -96,6 +104,9 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
                         datum = state.datum,
                         cena = state.cena.toDouble(),
                         photoUri = state.photoUri?.toString(),
+                        nazov = state.nazov,
+                        colorHex = state.selectedColor.toString(),
+                        typ = state.typ,
                     )
                 )
                 val context = getApplication<Application>().applicationContext

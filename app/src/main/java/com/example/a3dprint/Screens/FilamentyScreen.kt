@@ -107,6 +107,7 @@ fun FilamentyScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .offset(x = (-6).dp)
                             .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -173,11 +174,11 @@ fun FilamentyScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    filament.name, style = MaterialTheme.typography.bodyLarge,
+                                    "${filament.name} (${filament.description})" , style = MaterialTheme.typography.bodyLarge,
                                     textAlign = TextAlign.Center,
                                 )
                                 Text(
-                                    "${filament.currentWeight}g / ${filament.maxWeight}g",
+                                    "${filament.currentWeight}g",
                                     style = MaterialTheme.typography.bodySmall,
                                     textAlign = TextAlign.Center,
 
