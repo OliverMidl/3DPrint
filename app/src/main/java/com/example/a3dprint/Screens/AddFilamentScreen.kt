@@ -35,16 +35,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import java.io.File
 import java.io.FileOutputStream
 
+
+/**
+ * Destination pre navigáciu na obrazovku pridania filamentu.
+ */
 object AddFilamentScreenDest : NavigationDestination {
     override val route = "pridat_filament"
     override val titleRes = R.string.text_filamenty
 }
+
+/**
+ * Zoznam vopred definovaných farieb filamentu.
+ */
 val predefinedColors = listOf(
     R.color.filament_red,
     R.color.filament_blue,
@@ -59,7 +68,15 @@ val predefinedColors = listOf(
 )
 
 
-
+/**
+ * Obrazovka na pridanie nového filamentu.
+ *
+ * Umožňuje používateľovi zadať názov, popis, cenu, hmotnosť a farbu filamentu.
+ * Podporuje aj výber fotografie z galérie alebo odfotenie pomocou fotoaparátu.
+ *
+ * @param onNavigateBack Callback funkcia, ktorá sa zavolá po úspešnom uložení alebo návrate späť.
+ * @param viewModel ViewModel obrazovky.
+ */
 @SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,16 +84,24 @@ fun AddFilamentScreen(
     onNavigateBack: () -> Unit,
     viewModel: AddFilamentViewModel = viewModel()
 ) {
+
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    /**
+     * Uloží fotografiu z URI do úložiska aplikácie.
+     * Pri tvorbe tejto metódy som si pomohol s chatGBT ale rozumiem čo to robí.
+     *
+     * @param context Kontext aplikácie.
+     * @param imageUri URI obrázka z fotoaparátu alebo galérie.
+     * @return URI obrázka uloženého v úložisku.
+     */
     fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
         val contentResolver = context.contentResolver
         val inputStream = contentResolver.openInputStream(imageUri)
         val fileName = "filament_${System.currentTimeMillis()}.jpg"
         val file = File(context.filesDir, fileName)
         val outputStream = FileOutputStream(file)
-
         inputStream?.copyTo(outputStream)
         inputStream?.close()
         outputStream.close()
@@ -89,14 +114,18 @@ fun AddFilamentScreen(
     ) { success ->
         if (success) {
             viewModel.photoUri.value?.let { uri ->
-                //viewModel.updatePhotoUri(uri.toString())
                 val savedUri = saveImageToStorage(context, uri)
                 viewModel.updatePhotoUri(savedUri.toString())
             }
         }
     }
 
-    fun createImageUri(context: Context): Uri {
+    /**
+     * Vytvorí URI pre novú fotografiu, ktorá bude uložená v úložisku zariadenia.
+     *
+     * @return URI, kde bude fotka uložená.
+     */
+    fun createImageUri(): Uri {
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "photo_${System.currentTimeMillis()}.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
@@ -104,8 +133,11 @@ fun AddFilamentScreen(
         return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
     }
 
+    /**
+     * Spustí kameru na nasnímanie fotografie, pričom sa vytvorí nové URI pre výstup.
+     */
     fun launchCamera() {
-        val uri = createImageUri(context)
+        val uri = createImageUri()
         viewModel.photoUri.value = uri
         cameraLauncher.launch(uri)
     }
@@ -117,7 +149,7 @@ fun AddFilamentScreen(
         if (isGranted) {
             launchCamera()
         } else {
-            Toast.makeText(context, "Povolenie na kameru je potrebné", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.cameraAccess, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -125,8 +157,6 @@ fun AddFilamentScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-
-           // viewModel.updatePhotoUri(it.toString())
             val savedUri = saveImageToStorage(context, it)
             viewModel.updatePhotoUri(savedUri.toString())
         }
@@ -148,7 +178,7 @@ fun AddFilamentScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.spat)
                         )
                     }
                 },
@@ -162,8 +192,8 @@ fun AddFilamentScreen(
         if (viewModel.showPhotoOptions.value) {
             AlertDialog(
                 onDismissRequest = { viewModel.toggleShowPhotoOptions() },
-                title = { Text("Vybrať možnosť") },
-                text = { Text("Chceš vybrať fotku z galérie alebo odfotiť?") },
+                title = { Text(stringResource(R.string.moznost)) },
+                text = { Text(stringResource(R.string.galeria_fotka)) },
                 confirmButton = {
                     TextButton(onClick = {
                         viewModel.toggleShowPhotoOptions()
@@ -175,7 +205,7 @@ fun AddFilamentScreen(
                             permissionLauncher.launch(Manifest.permission.CAMERA)
                         }
                     }) {
-                        Text("Odfotiť")
+                        Text(stringResource(R.string.odfotit))
                     }
                 },
                 dismissButton = {
@@ -183,7 +213,7 @@ fun AddFilamentScreen(
                         viewModel.toggleShowPhotoOptions()
                         galleryLauncher.launch("image/*")
                     }) {
-                        Text("Z galérie")
+                        Text(stringResource(R.string.odkialG))
                     }
                 }
             )
@@ -208,10 +238,10 @@ fun AddFilamentScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             painter = painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "Upload",
+                            contentDescription = stringResource(R.string.upload),
                             modifier = Modifier.size(48.dp)
                         )
-                        Text("Pridať fotku")
+                        Text(stringResource(R.string.pridatFoto))
                     }
                 }
                 uiState.photoUri?.let {
@@ -226,11 +256,10 @@ fun AddFilamentScreen(
                 }
             }
 
-
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::updateName,
-                label = { Text("Názov") },
+                label = { Text(stringResource(R.string.nazov)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -238,7 +267,7 @@ fun AddFilamentScreen(
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::updateDescription,
-                label = { Text("Popis") },
+                label = { Text(stringResource(R.string.popis)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -246,7 +275,7 @@ fun AddFilamentScreen(
             OutlinedTextField(
                 value = uiState.price,
                 onValueChange = viewModel::updatePrice,
-                label = { Text("Jednotková cena") },
+                label = { Text(stringResource(R.string.jednoCena)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -255,12 +284,12 @@ fun AddFilamentScreen(
             OutlinedTextField(
                 value = uiState.weight,
                 onValueChange = viewModel::updateWeight,
-                label = { Text("Gramáž") },
+                label = { Text(stringResource(R.string.gram)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
-            Text("Vyber farbu filamentu:")
+            Text(stringResource(R.string.vyber_fil))
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -279,7 +308,7 @@ fun AddFilamentScreen(
                             .size(40.dp)
                             .padding(4.dp)
                             .background(
-                                color = androidx.compose.ui.graphics.Color(colorInt),
+                                color = Color(colorInt),
                                 shape = MaterialTheme.shapes.small
                             )
                             .border(
@@ -302,7 +331,7 @@ fun AddFilamentScreen(
                     .height(56.dp),
                 enabled = uiState.isValid
             ) {
-                Text("Uložiť")
+                Text(stringResource(R.string.ulozit))
             }
         }
     }

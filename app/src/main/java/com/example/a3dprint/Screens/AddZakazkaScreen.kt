@@ -45,11 +45,17 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.colorResource
 
+/**
+ * Destination pre navigáciu na obrazovku pridania zákazky.
+ */
 object AddZakazkaScreenDest : NavigationDestination {
     override val route = "pridat_zakazku"
     override val titleRes = R.string.text_zakazky
 }
 
+/**
+ * Zoznam vopred definovaných farieb filamentu.
+ */
 val predefinedColorsZakazka = listOf(
     R.color.filament_red,
     R.color.filament_blue,
@@ -62,6 +68,16 @@ val predefinedColorsZakazka = listOf(
     R.color.filament_gray,
     R.color.filament_brown
 )
+
+/**
+ * Obrazovka na pridanie novej zákazky.
+ *
+ * Umožňuje používateľovi zadať názov, popis, dátum, typ filamentu, farbu filamentu a cenu.
+ * Podporuje aj výber fotografie z galérie alebo odfotenie pomocou fotoaparátu.
+ *
+ * @param onNavigateBack Callback funkcia, ktorá sa zavolá po úspešnom uložení alebo návrate späť.
+ * @param viewModel ViewModel obrazovky.
+ */
 
 @SuppressLint("SimpleDateFormat")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +100,14 @@ fun AddZakazkaScreen(
         viewModel.checkAndRequestNotificationPermissionRequired.value = false
     }
 
+    /**
+     * Uloží fotografiu z URI do úložiska aplikácie.
+     * Pri tvorbe tejto metódy som si pomohol s chatGBT ale rozumiem čo to robí.
+     *
+     * @param context Kontext aplikácie.
+     * @param imageUri URI obrázka z fotoaparátu alebo galérie.
+     * @return URI obrázka uloženého v úložisku.
+     */
     fun saveImageToStorage(context: Context, imageUri: Uri): Uri {
         val contentResolver = context.contentResolver
         val inputStream = contentResolver.openInputStream(imageUri)
@@ -109,6 +133,11 @@ fun AddZakazkaScreen(
         }
     }
 
+    /**
+     * Vytvorí URI pre novú fotografiu, ktorá bude uložená v úložisku zariadenia.
+     *
+     * @return URI, kde bude fotka uložená.
+     */
     fun createImageUri(): Uri {
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "photo_${System.currentTimeMillis()}.jpg")
@@ -117,6 +146,9 @@ fun AddZakazkaScreen(
         return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
     }
 
+    /**
+     * Spustí kameru na nasnímanie fotografie, pričom sa vytvorí nové URI pre výstup.
+     */
     fun launchCamera() {
         val uri = createImageUri()
         viewModel.photoUri.value = uri
@@ -130,7 +162,7 @@ fun AddZakazkaScreen(
         if (isGranted) {
             launchCamera()
         } else {
-            Toast.makeText(context, "Povolenie na kameru je potrebné", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.cameraAccess, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -155,12 +187,12 @@ fun AddZakazkaScreen(
                     datePickerState.selectedDateMillis?.let { viewModel.updateSelectedDate(it) }
                     viewModel.toggleDateDialog(false)
                 }) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.toggleDateDialog(false) }) {
-                    Text("Zrušiť")
+                    Text(stringResource(R.string.zrusit))
                 }
             }
         ) {
@@ -168,13 +200,12 @@ fun AddZakazkaScreen(
         }
     }
 
-
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.spat))
                     }
                 },
                 title = {
@@ -197,8 +228,8 @@ fun AddZakazkaScreen(
         if (viewModel.showPhotoOptions.value) {
             AlertDialog(
                 onDismissRequest = { viewModel.toggleShowPhotoOptions() },
-                title = { Text("Vybrať možnosť") },
-                text = { Text("Chceš vybrať fotku z galérie alebo odfotiť?") },
+                title = { Text(stringResource(R.string.moznost)) },
+                text = { Text(stringResource(R.string.galeria_fotka)) },
                 confirmButton = {
                     TextButton(onClick = {
                         viewModel.toggleShowPhotoOptions()
@@ -210,7 +241,7 @@ fun AddZakazkaScreen(
                             permissionLauncher.launch(Manifest.permission.CAMERA)
                         }
                     }) {
-                        Text("Odfotiť")
+                        Text(stringResource(R.string.odfotit))
                     }
                 },
                 dismissButton = {
@@ -218,7 +249,7 @@ fun AddZakazkaScreen(
                         viewModel.toggleShowPhotoOptions()
                         galleryLauncher.launch("image/*")
                     }) {
-                        Text("Z galérie")
+                        Text(stringResource(R.string.odkialG))
                     }
                 }
             )
@@ -243,10 +274,10 @@ fun AddZakazkaScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             painter = painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "Upload",
+                            contentDescription = stringResource(R.string.upload),
                             modifier = Modifier.size(48.dp)
                         )
-                        Text("Pridať fotku")
+                        Text(stringResource(R.string.pridatFoto))
                     }
                 }
                 uiState.photoUri?.let {
@@ -263,7 +294,7 @@ fun AddZakazkaScreen(
             OutlinedTextField(
                 value = uiState.popis,
                 onValueChange = viewModel::updatePopis,
-                label = { Text("Názov zákazky") },
+                label = { Text(stringResource(R.string.nazovZak)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -271,7 +302,7 @@ fun AddZakazkaScreen(
             OutlinedTextField(
                 value = uiState.nazov,
                 onValueChange = viewModel::updateNazov,
-                label = { Text("Popis zákazky") },
+                label = { Text(stringResource(R.string.popisZak)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -286,7 +317,7 @@ fun AddZakazkaScreen(
                 OutlinedTextField(
                     value = uiState.datum,
                     onValueChange = {},
-                    label = { Text("Dátum") },
+                    label = { Text(stringResource(R.string.datum)) },
                     readOnly = true,
                     singleLine = true,
                     modifier = Modifier
@@ -303,12 +334,12 @@ fun AddZakazkaScreen(
             OutlinedTextField(
                 value = uiState.typ,
                 onValueChange = viewModel::updateTyp,
-                label = { Text("Typ filamentu") },
+                label = { Text(stringResource(R.string.typ_fil)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
-            Text("Vyber farbu filamentu:")
+            Text(stringResource(R.string.vyber_fil))
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -347,7 +378,7 @@ fun AddZakazkaScreen(
             OutlinedTextField(
                 value = uiState.cena,
                 onValueChange = viewModel::updateCena,
-                label = { Text("Cena") },
+                label = { Text(stringResource(R.string.cena)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -361,7 +392,7 @@ fun AddZakazkaScreen(
                     .height(56.dp),
                 enabled = uiState.isValid
             ) {
-                Text("Uložiť zákazku")
+                Text(stringResource(R.string.ulozZak))
             }
         }
     }

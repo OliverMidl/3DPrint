@@ -30,17 +30,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.a3dprint.R
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.StatistikaViewModel
 
+/**
+ * Objekt reprezentujúci cieľ navigácie pre obrazovku štatistiky.
+ *
+ */
 object StatistikaScreenDest : NavigationDestination {
     override val route = "statistika"
     override val titleRes = R.string.text_statistika
 }
 
+/**
+ * Zobrazenie obrazovky štatistiky.
+ *
+ * Zobrazuje rôzne štatistické údaje.
+ *
+ * @param viewModel ViewModel, ktorý poskytuje štatistické dáta
+ * @param onNavigateBack Callback, ktorý sa spustí pri stlačení tlačidla späť
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatistikaScreen(
@@ -59,11 +72,11 @@ fun StatistikaScreen(
                             .offset(x = (-22).dp)
                             .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center) {
-                        Text("Štatistika")}
+                        Text(stringResource(R.string.text_statistika))}
                         },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.spat))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -82,18 +95,22 @@ fun StatistikaScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            StatCard("Počet zákaziek", statistika.pocetZakaziek.toString())
-            StatCard("Celkový zárobok", "%.2f €".format(statistika.celkovyZarobok))
-            StatCard("Filament na sklade v g", "%.2f g".format(statistika.aktualneNaSkladeFilament))
-            StatCard("Počet filamentov", statistika.pocetFilament.toString())
+            StatCard(stringResource(R.string.pocet_zakaziek), statistika.pocetZakaziek.toString())
+            StatCard(stringResource(R.string.celkovy_zarobok), "%.2f €".format(statistika.celkovyZarobok))
+            StatCard(stringResource(R.string.filament_na_sklade), "%.2f g".format(statistika.aktualneNaSkladeFilament))
+            StatCard(stringResource(R.string.pocet_filament), statistika.pocetFilament.toString())
         }
     }
 }
 
-
+/**
+ * Komponent reprezentujúci jednu štatistickú kartu so zadaným názvom a hodnotou.
+ *
+ * @param title Názov štatistiky.
+ * @param value Hodnota štatistiky.
+ */
 @Composable
 fun StatCard(title: String, value: String) {
-
     Card(
         modifier = Modifier
             .fillMaxWidth(),

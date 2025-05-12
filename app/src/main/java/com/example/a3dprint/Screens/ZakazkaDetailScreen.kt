@@ -26,8 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -38,7 +40,10 @@ import com.example.a3dprint.data.Zakazka
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.viewModels.ZakazkaDetailViewModel
 
-
+/**
+ * Objekt definujúci cieľ navigácie pre obrazovku detailu zákazky.
+ *
+ */
 object ZakazkaDetailScreenDest : NavigationDestination {
     override val route = "zakazka_detail"
     override val titleRes = R.string.text_zakazky
@@ -48,16 +53,24 @@ object ZakazkaDetailScreenDest : NavigationDestination {
 
 }
 
+/**
+ * Zobrazenie detailu jednej zákazky.
+ *
+ * Zobrazí obrázok, názov, popis, typ, cenu a dátum zákazky, spolu s možnosťou ju vymazať.
+ *
+ * @param zakazkaId ID zákazky, ktorá sa má zobraziť
+ * @param onBack Callback funkcia spustená pri návrate späť
+ * @param viewModel ViewModel pre prístup k dátam o zákazkách
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ZakazkaDetailScreen(
     zakazkaId: Int,
     onBack: () -> Unit,
     viewModel: ZakazkaDetailViewModel = viewModel(),
-
-
     ) {
     val zakazka by viewModel.getZakazkaById(zakazkaId).collectAsState(initial = null)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -67,13 +80,12 @@ fun ZakazkaDetailScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .offset(x = (-22).dp),
-                            //.clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center) {
-                        Text("Detail zakazky")}
+                        Text(stringResource(R.string.detail_zakazky))}
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.spat))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -84,7 +96,6 @@ fun ZakazkaDetailScreen(
         containerColor = colorResource(id = R.color.blue1)
     ) { innerPadding ->
         zakazka?.let { zakazkaData: Zakazka ->
-
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -101,7 +112,7 @@ fun ZakazkaDetailScreen(
                     if (imageUri != null) {
                         Image(
                             painter = rememberAsyncImagePainter(imageUri),
-                            contentDescription = "Zakazka Image",
+                            contentDescription = stringResource(R.string.obrazok_zakazka),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(8.dp))
@@ -109,35 +120,32 @@ fun ZakazkaDetailScreen(
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = "Default Zakazka Image",
+                            contentDescription = stringResource(R.string.default_obrazok),
                             modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
-
-
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
-                    text = "Názov: ${zakazkaData.popis}",
+                    text = context.getString(R.string.nazov_, zakazkaData.popis),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Popis: ${zakazkaData.nazov}",
+                    text = context.getString(R.string.popis_, zakazkaData.nazov),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Typ: ${zakazkaData.typ}",
+                    text = context.getString(R.string.typ_, zakazkaData.typ),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Cena: ${zakazkaData.cena}",
+                    text = context.getString(R.string.cena_, zakazkaData.cena),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Dátum: ${zakazkaData.datum}",
+                    text = context.getString(R.string.datum_, zakazkaData.datum),
                     fontSize = 20.sp
                 )
-
 
                 Spacer(modifier = Modifier.height(50.dp))
 
@@ -148,7 +156,7 @@ fun ZakazkaDetailScreen(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Vymazať")
+                    Text(stringResource(R.string.vymazat))
                 }
             }
         }

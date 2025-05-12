@@ -50,11 +50,24 @@ import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.R
 import androidx.core.graphics.toColorInt
 
+/**
+ * Objekt reprezentujúci cieľ navigácie pre obrazovku so zoznamom filamentov.
+ */
 object FilamentyScreenDest : NavigationDestination {
     override val route = "filamenty"
     override val titleRes = R.string.text_filamenty
 }
 
+/**
+ * Zobrazí zoznam všetkých filamentov spolu s možnosťami pridania nového filamentu a prechodu na detail.
+ *
+ *
+ * @param viewModel ViewModel, ktorý poskytuje zoznam filamentov
+ * @param onNavigateToZakazky Callback pre navigáciu na obrazovku zákaziek
+ * @param onNavigateToFinancie Callback pre navigáciu na obrazovku financií
+ * @param onNavigateToAddFilament Callback pre navigáciu na obrazovku pridania filamentu
+ * @param onNavigateToFilamentDetail Callback pre navigáciu na detail konkrétneho filamentu
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilamentyScreen(
@@ -121,7 +134,7 @@ fun FilamentyScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { onNavigateToAddFilament() }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Filament")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.pridat_filament))
             }
         },
     ) { padding ->
@@ -183,16 +196,14 @@ fun FilamentyScreen(
                                     textAlign = TextAlign.Center,
 
                                 )
-
                             }
                             Spacer(modifier = Modifier.weight(1f))
                             IconButton(onClick = {
                                 onNavigateToFilamentDetail(filament.id)
                             }) {
-                                Icon(imageVector = Icons.Default.Settings, contentDescription = "Nastavenia")
+                                Icon(imageVector = Icons.Default.Settings, contentDescription = stringResource(R.string.editacia))
                             }
                         }
-
                     }
                 }
             }

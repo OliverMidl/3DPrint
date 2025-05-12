@@ -12,6 +12,12 @@ import androidx.compose.ui.res.colorResource
 import com.example.a3dprint.navMenu.MainNavigation
 import com.example.a3dprint.ui.theme._3DPrintTheme
 
+/**
+ * Hlavná aktivita aplikácie, ktorá nastavuje obsah obrazovky a definuje navigáciu.
+ *
+ * Táto aktivita používa Jetpack Compose na nastavenie UI. Obsah je zobrazený s
+ * navigáciou, ktorá je riadená cez MainNavigation.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

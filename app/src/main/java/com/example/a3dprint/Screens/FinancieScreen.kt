@@ -42,17 +42,30 @@ import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.R
 import androidx.compose.runtime.getValue
 
+/**
+ * Objekt reprezentujúci cieľ navigácie pre obrazovku financií.
+ *
+ */
 object FinancieScreenDest : NavigationDestination {
     override val route = "financie"
     override val titleRes = R.string.text_financie
 }
 
+/**
+ * Zobrazí obrazovku financií s celkovým profitom zo zákaziek a možnosťou prejsť na štatistiky.
+ *
+ *
+ * @param viewModel ViewModel pre obrazovku financií
+ * @param onNavigateToStatistics Callback pre prechod na obrazovku so štatistikami
+ * @param onNavigateToZakazky Callback pre navigáciu na obrazovku zákaziek
+ * @param onNavigateToFilamenty Callback pre navigáciu na obrazovku filamentov
+ */
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinancieScreen(
     viewModel: FinancieScreenViewModel = viewModel(),
-    onStatisticsClick: () -> Unit,
+    onNavigateToStatistics: () -> Unit,
     onNavigateToZakazky: () -> Unit,
     onNavigateToFilamenty: () -> Unit,
 ) {
@@ -87,12 +100,8 @@ fun FinancieScreen(
                     icon = { Icon(Icons.Default.Star, contentDescription = FinancieScreenDest.route,
                         tint = colorResource(id = R.color.black)) },
                     label = { Text(stringResource(FinancieScreenDest.titleRes)) },
-
                     )
-
-
             }
-
         },
         topBar = {
             TopAppBar(
@@ -122,7 +131,7 @@ fun FinancieScreen(
                 .background(colorResource(id = R.color.blue1)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Celkový profit", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.celkovy_profit), fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = String.format("%.2f €", totalProfit),
@@ -132,7 +141,7 @@ fun FinancieScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = {onStatisticsClick()},
+                onClick = {onNavigateToStatistics()},
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .width(300.dp)
@@ -140,7 +149,7 @@ fun FinancieScreen(
             ) {
                 Icon(Icons.Default.Star, contentDescription = null, tint = Color.Black)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Štatistiky", color = Color.Black)
+                Text(stringResource(R.string.text_statistika), color = Color.Black)
             }
         }
     }

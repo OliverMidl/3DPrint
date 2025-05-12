@@ -18,7 +18,17 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-
+/**
+ * Trieda reprezentujúca stav UI pre pridanie zákazky.
+ *
+ * @property popis Popis zákazky.
+ * @property datum Dátum zákazky vo formáte "dd.MM.yyyy".
+ * @property cena Cena zákazky ako reťazec.
+ * @property nazov Názov zákazky.
+ * @property photoUri URI obrázka zákazky (voliteľné).
+ * @property selectedColor Hex kód vybratej farby (voliteľné).
+ * @property typ Typ zákazky.
+ */
 data class AddZakazkaUiState(
     val popis: String = "",
     val datum: String = "",
@@ -32,29 +42,59 @@ data class AddZakazkaUiState(
         get() = popis.isNotBlank() && datum.isNotBlank() && cena.toDoubleOrNull() != null
 }
 
+/**
+ * ViewModel pre obrazovku pridania zákazky.
+ *
+ * Zodpovedá za správu vstupných údajov, ukladanie do databázy
+ * Inicializuje ViewModel s databázou.
+ */
 class AddZakazkaViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AppDatabase.getDatabase(application)
     private val repository = ZakazkaRepository(database.zakazkaDao())
 
+    /**
+     * Zobrazenie možností výberu fotografie (kamera/galéria).
+     */
     var showPhotoOptions = mutableStateOf(false)
         private set
 
+    /**
+     * Stav povolenia pre kameru.
+     */
     var cameraPermissionGranted = mutableStateOf(false)
         private set
 
+
+    /**
+     * URI fotografie vytvorenej kamerou.
+     */
     var photoUri = mutableStateOf<Uri?>(null)
         private set
 
+    /**
+     * Aktualizuje stav povolenia pre kameru.
+     *
+     * @param isGranted `true` ak bolo udelené povolenie.
+     */
     fun updateCameraPermissionGranted(isGranted: Boolean) {
         cameraPermissionGranted.value = isGranted
     }
 
+    /**
+     * Prepína zobrazenie možností pre fotografiu.
+     */
     fun toggleShowPhotoOptions() {
         showPhotoOptions.value = !showPhotoOptions.value
     }
 
     val selectedDateMillis = mutableStateOf<Long?>(null)
+
+    /**
+     * Aktualizuje dátum zákazky podľa timestampu a nastaví ho vo formáte "dd.MM.yyyy".
+     *
+     * @param millis Čas v milisekundách.
+     */
     @SuppressLint("SimpleDateFormat")
     fun updateSelectedDate(millis: Long) {
         selectedDateMillis.value = millis
@@ -63,6 +103,12 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     val openDateDialog = mutableStateOf(false)
+
+    /**
+     * Otvorí alebo zatvorí dialóg výberu dátumu.
+     *
+     * @param open true, ak sa má dialóg zobraziť.
+     */
     fun toggleDateDialog(open: Boolean) {
         openDateDialog.value = open
     }
@@ -70,21 +116,50 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
     private val _uiState = MutableStateFlow(AddZakazkaUiState())
     val uiState: StateFlow<AddZakazkaUiState> = _uiState
 
+    /**
+     * Aktualizuje popis zákazky.
+     */
     fun updatePopis(title: String) = _uiState.value.copy(popis = title).also { _uiState.value = it }
+
+    /**
+     * Aktualizuje typ zákazky.
+     */
     fun updateTyp(type: String) = _uiState.value.copy(typ = type).also { _uiState.value = it }
+
+    /**
+     * Aktualizuje názov zákazky.
+     */
     fun updateNazov(name: String) = _uiState.value.copy(nazov = name).also { _uiState.value = it }
+
+    /**
+     * Aktualizuje dátum zákazky.
+     */
     fun updateDatum(customer: String) = _uiState.value.copy(datum = customer).also { _uiState.value = it }
+
+    /**
+     * Aktualizuje cenu zákazky.
+     */
     fun updateCena(price: String) = _uiState.value.copy(cena = price).also { _uiState.value = it }
+
+    /**
+     * Aktualizuje URI fotografie zákazky.
+     */
     fun updatePhotoUri(uri: String) {
         _uiState.value = _uiState.value.copy(photoUri = uri)
     }
+
+    /**
+     * Aktualizuje vybranú farbu zákazky.
+     */
     fun updateSelectedColor(colorResId: String) {
         _uiState.value = _uiState.value.copy(selectedColor = colorResId)
     }
 
     val checkAndRequestNotificationPermissionRequired = mutableStateOf(false)
 
-
+    /**
+     * Kontroluje a požaduje povolenie na zobrazovanie notifikácií.
+     */
     fun checkAndRequestNotificationPermission() {
         val notificationManager = NotificationManagerCompat.from(getApplication<Application>())
         if (!notificationManager.areNotificationsEnabled()) {
@@ -92,8 +167,9 @@ class AddZakazkaViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-
-
+    /**
+     * Uloží zákazku do databázy a naplánuje notifikáciu.
+     */
     fun saveEntry(onSaved: () -> Unit) {
         val state = _uiState.value
         if (state.isValid) {

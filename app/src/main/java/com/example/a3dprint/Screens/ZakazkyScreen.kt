@@ -32,11 +32,27 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.a3dprint.navMenu.NavigationDestination
 import com.example.a3dprint.R
 
+/**
+ * Objekt definujúci cieľ navigácie pre obrazovku so zoznamom zákaziek.
+ */
 object ZakazkyScreenDest : NavigationDestination {
     override val route = "zakazky"
     override val titleRes = R.string.text_zakazky
 }
 
+/**
+ * Zobrazenie zoznamu zákaziek.
+ *
+ * Umožňuje navigovať do obrazoviek pridania zákazky, detailu zákazky, filamentov a financií.
+ * Každá zákazka sa zobrazí ako karta s obrázkom a popisom.
+ *
+ * @param modifier Modifier pre prispôsobenie vzhľadu
+ * @param viewModel ViewModel zodpovedný za dát.
+ * @param onNavigateToFilamenty Callback na navigáciu do obrazovky filamentov
+ * @param onNavigateToFinancie Callback na navigáciu do obrazovky financií
+ * @param onNavigateToAddZakazka Callback na navigáciu do obrazovky pridania zákazky
+ * @param onNavigateToDetailZakazka Callback na navigáciu do detailu konkrétnej zákazky podľa ID
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ZakazkyScreen(
@@ -77,12 +93,8 @@ fun ZakazkyScreen(
                     icon = { Icon(Icons.Default.Star, contentDescription = FilamentyScreenDest.route,
                         tint = colorResource(id = R.color.dark_grey)) },
                     label = { Text(stringResource(FinancieScreenDest.titleRes)) },
-
                 )
-
-
             }
-
         },
         topBar = {
             TopAppBar(
@@ -146,7 +158,7 @@ fun ZakazkyScreen(
                             if (imageUri != null) {
                                 Image(
                                     painter = rememberAsyncImagePainter(imageUri),
-                                    contentDescription = "Zakazka Image",
+                                    contentDescription = stringResource(R.string.obrazok_zakazka),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .weight(1f)
@@ -156,7 +168,7 @@ fun ZakazkyScreen(
                             } else {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                    contentDescription = "Default Image",
+                                    contentDescription = stringResource(R.string.default_obrazok),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .weight(1f)

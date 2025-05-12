@@ -41,14 +41,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 
 
-
+/**
+ * Objekt reprezentujúci cieľ navigácie pre obrazovku s detailom filamentu.
+ *
+ */
 object FilamentDetailScreenDest : NavigationDestination {
     override val route = "filament_detail"
     override val titleRes = R.string.text_filamenty
@@ -57,7 +62,15 @@ object FilamentDetailScreenDest : NavigationDestination {
     const val filamentIdArg = "filamentId"
 }
 
-
+/**
+ * Zobrazí detail vybraného filamentu vrátane fotografie, popisu, farby a aktuálnej hmotnosti.
+ *
+ * Používateľ môže zmeniť hmotnosť filamentu tlačidlami, alebo filament vymazať.
+ *
+ * @param filamentId ID filamentu, ktorého detail sa má zobraziť
+ * @param onBack Callback, ktorý sa zavolá po stlačení tlačidla späť alebo po odstránení filamentu
+ * @param viewModel ViewModel pre získanie a manipuláciu s údajmi o filamente
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilamentDetailScreen(
@@ -67,7 +80,7 @@ fun FilamentDetailScreen(
     viewModel: FilamentDetailViewModel = viewModel(),
 
 ) {
-
+    val context = LocalContext.current
     val filament by viewModel.getFilamentById(filamentId).collectAsState(initial = null)
     Scaffold(
         topBar = {
@@ -79,11 +92,11 @@ fun FilamentDetailScreen(
                             .offset(x = (-22).dp)
                             .clip(RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center) {
-                        Text("Filament")}
+                        Text(stringResource(R.string.filament))}
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Späť")
+                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.spat))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -108,14 +121,14 @@ fun FilamentDetailScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(500.dp)
+                        .height(450.dp)
                 ) {
                     val imageUri = filamentData.photoUri?.toUri()
 
                     if (imageUri != null) {
                         Image(
                             painter = rememberAsyncImagePainter(imageUri),
-                            contentDescription = "Filament Image",
+                            contentDescription = stringResource(R.string.obrazok_filament),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(8.dp))
@@ -123,32 +136,31 @@ fun FilamentDetailScreen(
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = "Default Filament Image",
+                            contentDescription = stringResource(R.string.default_obrazok),
                             modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
 
-
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
-                        .width(350.dp)
+                        .width(330.dp)
                         .height(8.dp)
 
                         .background(color)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Názov: ${filamentData.name}",
+                    text = context.getString(R.string.nazov_, filamentData.name),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Popis: ${filamentData.description}",
+                    text = context.getString(R.string.popis_, filamentData.description),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Gramáž na sklade: ${filamentData.currentWeight}g",
+                    text = context.getString(R.string.gramaz_, filamentData.currentWeight),
                     fontSize = 20.sp
                 )
 
@@ -158,13 +170,13 @@ fun FilamentDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Button(onClick = { viewModel.updateWeight(filamentData.id, 10) }) {
-                        Text("+10g")
+                        Text(stringResource(R.string.plus10))
                     }
                     Button(onClick = { viewModel.updateWeight(filamentData.id, 100) }) {
-                        Text("+100g")
+                        Text(stringResource(R.string.plus100))
                     }
                     Button(onClick = { viewModel.updateWeight(filamentData.id, 1000) }) {
-                        Text("+1000g")
+                        Text(stringResource(R.string.plus1000))
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -173,13 +185,13 @@ fun FilamentDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Button(onClick = { viewModel.updateWeight(filamentData.id, -10) }) {
-                        Text("-10g")
+                        Text(stringResource(R.string.minus10))
                     }
                     Button(onClick = { viewModel.updateWeight(filamentData.id, -100) }) {
-                        Text("-100g")
+                        Text(stringResource(R.string.minus100))
                     }
                     Button(onClick = { viewModel.updateWeight(filamentData.id, -1000) }) {
-                        Text("-1000g")
+                        Text(stringResource(R.string.minus1000))
                     }
                 }
 
@@ -192,7 +204,7 @@ fun FilamentDetailScreen(
                               },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Vymazať")
+                    Text(stringResource(R.string.vymazat))
                 }
             }
         }
