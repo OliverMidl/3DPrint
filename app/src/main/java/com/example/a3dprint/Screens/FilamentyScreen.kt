@@ -187,11 +187,11 @@ fun FilamentyScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    "${filament.name} (${filament.description})" , style = MaterialTheme.typography.bodyLarge,
+                                    "${filament.name} (${filament.popis})" , style = MaterialTheme.typography.bodyLarge,
                                     textAlign = TextAlign.Center,
                                 )
                                 Text(
-                                    "${filament.currentWeight}g",
+                                    "${filament.aktualnaHmotnost}g",
                                     style = MaterialTheme.typography.bodySmall,
                                     textAlign = TextAlign.Center,
 

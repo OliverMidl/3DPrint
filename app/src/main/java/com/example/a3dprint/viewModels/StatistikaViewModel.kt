@@ -72,7 +72,7 @@ class StatistikaViewModel(application: Application) : AndroidViewModel(applicati
             combine(zakazky, filamenty) { zakazkyList, filamentyList ->
                 val pocetZakazka = zakazkyList.size
                 val zarobok = zakazkyList.sumOf { it.cena.toDouble() }
-                val aktualneNaSkladeFilament = filamentyList.sumOf { it.currentWeight.toDouble() }
+                val aktualneNaSkladeFilament = filamentyList.sumOf { it.aktualnaHmotnost.toDouble() }
                 val pocetFilament = filamentyList.size
 
                 StatistikaUiState(

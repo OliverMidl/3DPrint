@@ -236,8 +236,8 @@ fun AddFilamentScreen(
             ) {
                 if (uiState.photoUri == null) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_launcher_background),
+                        Image(
+                            painter = painterResource(R.drawable.upload),
                             contentDescription = stringResource(R.string.upload),
                             modifier = Modifier.size(48.dp)
                         )
@@ -257,7 +257,7 @@ fun AddFilamentScreen(
             }
 
             OutlinedTextField(
-                value = uiState.name,
+                value = uiState.nazov,
                 onValueChange = viewModel::updateName,
                 label = { Text(stringResource(R.string.nazov)) },
                 modifier = Modifier.fillMaxWidth(),
@@ -265,7 +265,7 @@ fun AddFilamentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.description,
+                value = uiState.popis,
                 onValueChange = viewModel::updateDescription,
                 label = { Text(stringResource(R.string.popis)) },
                 modifier = Modifier.fillMaxWidth(),
@@ -273,7 +273,7 @@ fun AddFilamentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.price,
+                value = uiState.cena,
                 onValueChange = viewModel::updatePrice,
                 label = { Text(stringResource(R.string.jednoCena)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -282,7 +282,7 @@ fun AddFilamentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.weight,
+                value = uiState.hmotnost,
                 onValueChange = viewModel::updateWeight,
                 label = { Text(stringResource(R.string.gram)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -301,7 +301,7 @@ fun AddFilamentScreen(
                 predefinedColors.forEach { colorResId ->
                     val colorInt = ContextCompat.getColor(context, colorResId)
                     val colorHex = String.format("#%06X", 0xFFFFFF and colorInt)
-                    val isSelected = uiState.selectedColor.toString() == colorHex
+                    val isSelected = uiState.farbaFilamentu.toString() == colorHex
 
                     Box(
                         modifier = Modifier

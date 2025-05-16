@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
@@ -40,7 +40,6 @@ import com.example.a3dprint.viewModels.FilamentDetailViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -76,9 +75,7 @@ object FilamentDetailScreenDest : NavigationDestination {
 fun FilamentDetailScreen(
     filamentId: Int,
     onBack: () -> Unit,
-
     viewModel: FilamentDetailViewModel = viewModel(),
-
 ) {
     val context = LocalContext.current
     val filament by viewModel.getFilamentById(filamentId).collectAsState(initial = null)
@@ -115,6 +112,7 @@ fun FilamentDetailScreen(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -147,7 +145,6 @@ fun FilamentDetailScreen(
                     modifier = Modifier
                         .width(330.dp)
                         .height(8.dp)
-
                         .background(color)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -156,11 +153,11 @@ fun FilamentDetailScreen(
                     fontSize = 20.sp
                 )
                 Text(
-                    text = context.getString(R.string.popis_, filamentData.description),
+                    text = context.getString(R.string.popis_, filamentData.popis),
                     fontSize = 20.sp
                 )
                 Text(
-                    text = context.getString(R.string.gramaz_, filamentData.currentWeight),
+                    text = context.getString(R.string.gramaz_, filamentData.aktualnaHmotnost),
                     fontSize = 20.sp
                 )
 

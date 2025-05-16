@@ -59,7 +59,7 @@ interface FilamentDao {
      * @param filamentId ID filamentu, ktorý sa má aktualizovať.
      * @param weight Hmotnosť, ktorá sa má pripočítať.
      */
-    @Query("UPDATE filaments SET currentWeight = currentWeight + :weight WHERE id = :filamentId")
+    @Query("UPDATE filaments SET aktualnaHmotnost = aktualnaHmotnost + :weight WHERE id = :filamentId")
     suspend fun updateFilamentById(filamentId: Int, weight: Int)
 
 

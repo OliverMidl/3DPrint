@@ -272,8 +272,8 @@ fun AddZakazkaScreen(
             ) {
                 if (uiState.photoUri == null) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_launcher_background),
+                        Image(
+                            painter = painterResource(R.drawable.upload),
                             contentDescription = stringResource(R.string.upload),
                             modifier = Modifier.size(48.dp)
                         )

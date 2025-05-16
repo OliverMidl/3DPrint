@@ -11,10 +11,10 @@ import androidx.room.PrimaryKey
  *
  * @property id Primárny kľúč. Automaticky generovaný.
  * @property name Názov filamentu.
- * @property description Stručný popis.
- * @property price Cena filamentu v eurách.
- * @property maxWeight Pôvodná maximálna hmotnosť.
- * @property currentWeight Aktuálna zostávajúca hmotnosť.
+ * @property popis Stručný popis.
+ * @property cena Cena filamentu v eurách.
+ * @property hmotnost Pôvodná maximálna hmotnosť.
+ * @property aktualnaHmotnost Aktuálna zostávajúca hmotnosť.
  * @property photoUri URI adresa k fotografii filamentu.
  * @property colorHex Farba filamentu.
  */
@@ -22,10 +22,10 @@ import androidx.room.PrimaryKey
 data class Filament(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val description: String,
-    val price: Double,
-    val maxWeight: Int,
-    val currentWeight: Int = maxWeight,
+    val popis: String,
+    val cena: Double,
+    val hmotnost: Int,
+    val aktualnaHmotnost: Int = hmotnost,
     val photoUri: String? = null,
     val colorHex: String = "#FFFFFFFF"
 )

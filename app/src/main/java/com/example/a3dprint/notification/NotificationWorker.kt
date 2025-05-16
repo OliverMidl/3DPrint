@@ -42,7 +42,7 @@ class NotificationWorker(
      * notifikácia používateľovi o tejto zákazke.
      */
     override fun doWork(): Result {
-        val zakazkaName = inputData.getString("zakazka_popis") ?: applicationContext.getString(R.string.neznamaZak)
+        val zakazkaName = inputData.getString(applicationContext.getString(R.string.zakazka_popis)) ?: applicationContext.getString(R.string.neznamaZak)
         sendNotification(zakazkaName)
         return Result.success()
     }
@@ -59,7 +59,7 @@ class NotificationWorker(
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val channelId = "zakazka_channel"
+        val channelId = applicationContext.getString(R.string.zakazka_channel)
         val channel = NotificationChannel(
             channelId,
             applicationContext.getString(R.string.notifikacia_zakazka),
@@ -99,7 +99,7 @@ fun scheduleNotification(context: Context, zakazkaName: String, date: String) {
     if (delayMillis > 0) {
         val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInitialDelay(delayMillis, TimeUnit.MILLISECONDS)
-            .setInputData(workDataOf("zakazka_popis" to zakazkaName))
+            .setInputData(workDataOf(context.getString(R.string.zakazka_popis) to zakazkaName))
             .build()
 
         WorkManager.getInstance(context).enqueue(workRequest)

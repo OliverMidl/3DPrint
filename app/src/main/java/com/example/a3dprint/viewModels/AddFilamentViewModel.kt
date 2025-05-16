@@ -15,23 +15,23 @@ import kotlinx.coroutines.launch
 /**
  * Trieda reprezentujúca stav UI pre pridávanie nového filamentu.
  *
- * @property name Názov filamentu
- * @property description Popis filamentu
- * @property price Cena filamentu ako text
- * @property weight Váha filamentu ako text
+ * @property nazov Názov filamentu
+ * @property popis Popis filamentu
+ * @property cena Cena filamentu ako text
+ * @property hmotnost Váha filamentu ako text
  * @property photoUri URI obrázka filamentu
- * @property selectedColor Vybraná farba filamentu v hex formáte
+ * @property farbaFilamentu Vybraná farba filamentu v hex formáte
  */
 data class AddFilamentUiState(
-    val name: String = "",
-    val description: String = "",
-    val price: String = "",
-    val weight: String = "",
+    val nazov: String = "",
+    val popis: String = "",
+    val cena: String = "",
+    val hmotnost: String = "",
     val photoUri: String? = null,
-    val selectedColor: String? = null
+    val farbaFilamentu: String? = null
 ) {
     val isValid: Boolean
-        get() = name.isNotBlank() && price.toDoubleOrNull() != null && weight.toIntOrNull() != null && !photoUri.isNullOrEmpty()
+        get() = nazov.isNotBlank() && cena.toDoubleOrNull() != null && hmotnost.toIntOrNull() != null && !photoUri.isNullOrEmpty()
 }
 
 /**
@@ -87,28 +87,28 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
      * @param colorResId Farba vo formáte hex.
      */
     fun updateSelectedColor(colorResId: String) {
-        _uiState.value = _uiState.value.copy(selectedColor = colorResId)
+        _uiState.value = _uiState.value.copy(farbaFilamentu = colorResId)
     }
 
     /**
      * Aktualizuje názov filamentu.
      */
-    fun updateName(name: String) = _uiState.value.copy(name = name).also { _uiState.value = it }
+    fun updateName(name: String) = _uiState.value.copy(nazov = name).also { _uiState.value = it }
 
     /**
      * Aktualizuje popis filamentu.
      */
-    fun updateDescription(desc: String) = _uiState.value.copy(description = desc).also { _uiState.value = it }
+    fun updateDescription(desc: String) = _uiState.value.copy(popis = desc).also { _uiState.value = it }
 
     /**
      * Aktualizuje cenu filamentu.
      */
-    fun updatePrice(price: String) = _uiState.value.copy(price = price).also { _uiState.value = it }
+    fun updatePrice(price: String) = _uiState.value.copy(cena = price).also { _uiState.value = it }
 
     /**
      * Aktualizuje hmotnosť filamentu.
      */
-    fun updateWeight(weight: String) = _uiState.value.copy(weight = weight).also { _uiState.value = it }
+    fun updateWeight(weight: String) = _uiState.value.copy(hmotnost = weight).also { _uiState.value = it }
 
     /**
      * Nastaví URI obrázka.
@@ -133,12 +133,12 @@ class AddFilamentViewModel(application: Application) : AndroidViewModel(applicat
             viewModelScope.launch {
                 repository.insert(
                     Filament(
-                        name = state.name,
-                        description = state.description,
-                        price = state.price.toDouble(),
-                        maxWeight = state.weight.toInt(),
+                        name = state.nazov,
+                        popis = state.popis,
+                        cena = state.cena.toDouble(),
+                        hmotnost = state.hmotnost.toInt(),
                         photoUri = state.photoUri?.toString(),
-                        colorHex = state.selectedColor.toString()
+                        colorHex = state.farbaFilamentu.toString()
                     ) ,
                 )
                 onSaved()

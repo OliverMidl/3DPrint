@@ -52,6 +52,7 @@
     <string name="minus1000">-1000g</string>
     <string name="vymazat">Vymazať</string>
     <string name="pridat_filament">Pridať filament</string>
+    <string name="zakazka_channel">zakazka_channel</string>
     <string name="editacia">Editovanie</string>
     <string name="celkovy_profit">Celkový profit</string>
     <string name="pocet_zakaziek">Počet zákaziek</string>
@@ -60,6 +61,8 @@
     <string name="pocet_filament">Počet filamentov</string>
     <string name="detail_zakazky">Detail zákazky</string>
     <string name="obrazok_zakazka">Obrázok zákazky</string>
+    <string name="zakazka_popis">zakazka_popis</string>
+
 
 
 </resources>
